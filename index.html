@@ -1,19 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
 	<title>Turista</title>
 	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="lib/bootstrap.min.css">
+    <script type="text/javascript" scr="lib/jquery.min.js"></script>
+    <script type="text/javascript" scr="lib/bootstrap.min.js"></script>
 </head>
 <body>
-<div id="cochabamba" >
-	
-	<img src="provincias/cochabamba.png" width="800" height="640" alt="[cbba]" usemap="#mapaCocha">
-
-	<map name="mapaCocha">
-	  <area shape="rect" coords="0,0,82,126" alt="Sun" href="sun.html">
-	  <area shape="circle" coords="90,58,3" alt="Mercury" href="mercur.html">
-	  <area shape="circle" coords="124,58,8" alt="Venus" href="venus.html">
-	</map>
+<div class="container">
+    <header class="page-header">
+        <h1>Turista</h1>
+        <p>La aplicación para encontrar y compartir información turistica.</p>
+    </header>
+    <div class="row">
+        <div id="cochabamba" class="col-md-8">
+            <div class="row">
+            <div class="col-md-12">
+            <img src="imagenes/provincias/cochabamba.png" alt="[cbba]" usemap="#mapaCocha" class="img-thumbnail" style="width:100%">
+            <map name="mapaCocha">
+	           <area shape="rect" coords="0,0,82,126" alt="Sun" href="sun.html">
+	           <area shape="circle" coords="90,58,3" alt="Mercury" href="mercur.html">
+	           <area shape="circle" coords="124,58,8" alt="Venus" href="venus.html">
+            </map>
+            </div>
+            </div>
+            <div class="row">
+            <div class="col-md-12">
+                <button>Sitio turistico</button>
+                <button>Hoteles</button>
+                <button>Restaurantes</button>
+                <button>Mercados</button>
+                <button>Rutas</button>
+            </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <img src="imagenes/stub.png" class="img-thumbnail" style="width:100%">
+            <img src="imagenes/stub.png" class="img-thumbnail" style="width:100%">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <img src="imagenes/stub.png" class="img-thumbnail" style="width:100%">
+        </div>
+        <div class="col-md-4">
+            <img src="imagenes/stub.png" class="img-thumbnail" style="width:100%">            </div>
+        <div class="col-md-4">
+            <img src="imagenes/stub.png" class="img-thumbnail" style="width:100%">
+        </div>
+    </div>
 
 </div>
 </body>
