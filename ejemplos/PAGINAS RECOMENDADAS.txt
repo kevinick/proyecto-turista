@@ -1,6 +1,0 @@
-http://www.w3schools.com/cssref/css3_pr_background-size.asp   TAMAÑO DE UNA IMAGEN
-http://www.w3schools.com/graphics/google_maps_basic.asp    CREAR UN MAPA BASICO
-http://mapasamerica.dices.net/bolivia/bolivia-cercado-2.html   MAPAS DE TODOS LOS LUGARES DEL MUNDO
-https://www.youtube.com/watch?v=GLO5wtHWPyM   VIDEO
-https://developers.google.com/maps/documentation/javascript/tutorial?hl=es-419   AYUDAS
-http://cochabambabolivia.net/provincias-de-cochabamba   IMAGENES DE PROVINCIAS CON INFORMACION
