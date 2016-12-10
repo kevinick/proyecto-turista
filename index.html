@@ -25,7 +25,7 @@
 
             <img src="imagenes/provincias/cochabamba.png" alt="[cbba]"  usemap="#mapaCocha" onclick="mostrarMouse(event)" class="img-responsive">
     <!--style="width:100%" class="img-thumbnail" -->
-
+    		<button>atras</button>
             <map name="mapaCocha">
                 <area shape="circle" coords="198,200,50" alt="Ayopaya" ondblclick ="mapade(-16.5 ,-66.5833)">
                 <area shape="circle" coords="373,200,60" alt="Chapare" ondblclick ="mapade(-16.8 ,-65.1333)">
@@ -55,6 +55,7 @@
                 <button>Restaurantes</button>
                 <button>Mercados</button>
                 <button>Rutas</button>
+                <button><a href="index.html">Atras</a></button>
             </div>
             </div>
         </div>
@@ -97,8 +98,11 @@
                                  title    :"aqui estoy"
                                 }                         
             var chinche=new google.maps.Marker(objconfigmarker);
+            //"<a href="index.html">Atras</a>";
         }
-    
+    	$(document).ready(function(){
+
+    	});
     </script>
 
 </div>
