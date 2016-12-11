@@ -55,7 +55,7 @@
                 <button>Restaurantes</button>
                 <button>Mercados</button>
                 <button>Rutas</button>
-                <button><a href="index.html">Atras</a></button>
+                <button><a href="index.html">Atras</a></button>   
             </div>
             </div>
         </div>
@@ -96,9 +96,33 @@
                                  position :glatlon,
                                  map      :gmapa,
                                  title    :"aqui estoy"
-                                }                         
+                                }                                            
             var chinche=new google.maps.Marker(objconfigmarker);
+            google.maps.event.addListener(gmapa,'click',function(event){crearchinche(gmapa,event.latLng)});
+		}
             //"<a href="index.html">Atras</a>";
+        function crearchinche(map,location){
+        	var nuevoconf={                           
+                                 position :location,
+                                 map      :map,
+                                 title    :"latitud: "+location.lat()+" longitud: "+location.lng()
+                                } 
+        	var nuevo=new google.maps.Marker(nuevoconf);
+        	google.maps.event.addListener(nuevo,'click',function(){
+        		var subvent=new google.maps.InfoWindow({content:"hola aqui imagen"});
+        		subvent.open(map,nuevo);
+        		//alert("nueva pagina");
+        		
+        	});
+        	google.maps.event.addListener(nuevo,'dblclick',function(){
+        		var subvent=new google.maps.InfoWindow({content:"hola aqui abrir informacion"});
+        		subvent.open(map,nuevo);
+        		//crearlugar();
+        	});
+        }
+        function crearlugar(){
+
+        	//aqui deberiamos ...... cuando se hace doble click en el marker que me muestre una ventana donde se pueda poner datos del lugar, como foto y descipcion.
         }
     	$(document).ready(function(){
 
