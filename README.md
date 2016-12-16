@@ -2,8 +2,8 @@
 
 instalar node.js
 
-$ node servidor.js
+$ node install // para instalar las dependencias
 
-en el navegador escuchar desde el puerto 8080
+$ node app.s // iniciar el servidor
 
-http://localhost:8080/
+http://localhost:8080/ //en el navegador escuchar desde el puerto 8080
