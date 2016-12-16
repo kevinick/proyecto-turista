@@ -1,0 +1,21 @@
+html
+    head
+        title Turista
+        meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        link(rel="stylesheet" type="text/css" href="lib/bootstrap.min.css")
+        link(rel="stylesheet" type="text/css" href="lib/style.css")
+        script(type="text/javascript" src="lib/bootstrap.min.js")
+        script(type="text/javascript" src="lib/jquery.js")
+        script(type="text/javascript" src="lib/jqueryui.js")
+    body
+        form(action="/login/valid" method="post")
+            p
+                label(for="username") Nombre de usuario 
+                input(type="text" id="username" name="username" required)
+            p
+                label(for="password") Contraseña 
+                input(type="password" id="password" name="password"
+                required)
+            p
+                input(type="submit" value="Enviar")

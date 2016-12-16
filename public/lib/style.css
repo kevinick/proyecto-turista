@@ -1,0 +1,14 @@
+
+.main-map-container {
+    height:640px; 
+    width:800px;
+    text-align: center;
+    margin: 20px;
+}
+
+.main-map {
+    height:640px; 
+    width:800px;
+    padding: 5px;
+    border: 1px solid black;
+}
