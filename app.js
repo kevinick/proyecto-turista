@@ -3,6 +3,14 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var app = express();
 
+var models = require("./models");
+var User = models.User;
+var Place = models.Place;
+var Comment = models.Comment;
+var Image = models.Image;
+var LatLng = models.LatLng;
+var Vote = models.Vote;
+
 app.set("view engine", "jade");
 app.use(express.static("public"));
 app.use(bodyParser.json());
