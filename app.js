@@ -33,8 +33,13 @@ app.post("/login/valid", function(req, res) {
     res.redirect("/");
 });
 
-app.get("/place/*", function(req, res) {
+app.get("/place/",  function(req, res) {
+    res.redirect("/");
+})
 
+app.get("/place/:id", function(req, res) {
+
+    console.log(req.params.id);
     res.render("place");
 });
 
