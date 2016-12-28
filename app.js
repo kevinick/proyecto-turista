@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.get("/", function (req, res) {
 
-    res.render("index");
+    res.render("index"); //{names:["juan", "maria", "gonzalo", "daniel"]});
 });
 
 app.get("/login", function(req, res) {
@@ -33,8 +33,8 @@ app.post("/login/valid", function(req, res) {
     res.redirect("/");
 });
 
-app.get("/place/",  function(req, res) {
-    res.redirect("/");
+app.get("/new-place", function(req, res) {
+    res.send("Nuevo lugar");
 })
 
 app.get("/place/:id", function(req, res) {
@@ -42,5 +42,14 @@ app.get("/place/:id", function(req, res) {
     console.log(req.params.id);
     res.render("place");
 });
+
+app.get("/search", function(req, res) {
+
+    res.send("Buscar");
+});
+
+app.get("*", function (req, res) {
+    res.render("not-found");
+})
 
 app.listen(8080);

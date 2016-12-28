@@ -12,10 +12,14 @@ function mapade(lat,long){
                     }
     var gmapa= new google.maps.Map(divmapa2,objConfmapa); 
 
-    var objconfigmarker={                           
+    var objconfigmarker={
                          position :glatlon,
                          map      :gmapa,
                          title    :"aqui estoy"
                         }                         
     var chinche=new google.maps.Marker(objconfigmarker);
+}
+
+function initMap() {
+    mapade(-17.3895,-66.1568);
 }
