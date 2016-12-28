@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.get("/", function (req, res) {
 
-    res.render("index"); //{names:["juan", "maria", "gonzalo", "daniel"]});
+    res.render("index", {names:["juan", "maria", "gonzalo", "daniel"]});
 });
 
 app.get("/login", function(req, res) {

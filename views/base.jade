@@ -36,4 +36,12 @@ html
                     ul(class="nav navbar-nav navbar-right")
                         li
                             a(href="/login") Ingresar
+
+        mixin putPlaces(places)
+            h4 Sitios Recomendados
+            for place in places
+                .col-md-3.col-sm-6
+                    .thumbnail.mini
+                        img(src="stub.jpg" style="width:100%")
+                        p #{place}
         block content

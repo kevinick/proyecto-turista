@@ -4,13 +4,9 @@ block content
         .jumbotron.text-center
             #mapa-principal
     .container
+
         if names
-            h4 Sitios Recomendados
-            for name in names
-                .col-md-3.col-sm-6
-                    .thumbnail.mini
-                        img(src="stub.jpg" style="width:100%")
-                        p #{name}
+            +putPlaces(names)
         else
         - console.log("Sitios recomendados vacio");
 
