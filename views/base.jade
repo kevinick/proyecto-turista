@@ -41,9 +41,9 @@ html
             .row
                 for place in places
                     a(href="/place/#{place._id}")
-                        .col-md-3.col-sm-6
+                        .col-md-3.col-sm-6.mini
                             .thumbnail
-                                img(src="/imagenes/#{place.image}" style="width:100%" class="img-responsive")
+                                img(src="/imagenes/#{place.image}" class="img-responsive mini-img")
                                 .caption
                                     p #{place.name}
         block content

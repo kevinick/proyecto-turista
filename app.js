@@ -73,8 +73,9 @@ app.post("/new-place/save", multipartMiddleware, function(req, res) {
                 res.render("save", {success: true});
             });
         }
-
-        if (req.files) {
+        console.log(req.files);
+        console.log(fs);
+        if (req.files.file.size > 0) {
             var ext = req.files.file.name.split(".").pop();
             var path = req.files.file.path;
             Image.create({
@@ -94,6 +95,7 @@ app.post("/new-place/save", multipartMiddleware, function(req, res) {
                 newPlace(img);
             });
         } else {
+            fs.unlink(req.files.file.path);
             newPlace(null);
         }
     });
@@ -109,26 +111,24 @@ app.get("/search", function(req, res) {
 
     var regexp = new RegExp(req.query.pattern, "i");
     Place.find({name: regexp}, function(err, data) {
-
-        var current;
-        for (var i = 0; i< data.length; i++){
-            current = data[i];
-            if (current.images.length > 0) {
-                console.log(current.images);
-                Image.findById(current.images[0], function (ferr, image) {
-                    if (ferr) {console.log(ferr);}
-                    console.log(image);
-                    current.image = image._id + "." + image.extension;
-
-                });
+        console.log(data);
+        function iterate(i, places) {
+            if (i < places.length) {
+                var place = places[i];
+                if (place.images.length > 0) {
+                    Image.findById(place.images[0], function(ferr, image) {
+                        if (ferr) console.log(ferr);
+                        place.image = image._id+"."+image.extension;
+                        iterate(i + 1, places);
+                    });
+                } else{
+                    place.image = "image.png";
+                    iterate(i + 1, places);
+                }
             } else {
-                current.image = "image.png";
+                res.render("search", {results: data});
             }
         }
-        setTimeout(function() {
-        }, 1000);
-        
-            res.render("search", {results: data});
     })
 });
 

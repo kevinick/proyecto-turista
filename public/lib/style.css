@@ -33,3 +33,12 @@ textarea {
     width: 100%;
     border-radius: 4px;
 }
+
+.mini {
+    height: 350px;
+}
+
+.mini-img {
+    width:100%; 
+    max-height:250px;
+}
