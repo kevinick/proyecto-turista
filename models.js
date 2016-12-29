@@ -5,36 +5,58 @@ var Schema = mongoose.Schema;
 
 // importante: se debe compilar un schema usando siempre mongoose.model
 var User = mongoose.model("User", new Schema({
-    name: String,
-    email: String
+    name: {type: String, required:true},
+    email: {type: String, required:true},
 }));
 
 var Place = mongoose.model("Place",  new Schema({
-    name: String,
-    description: String
+    name: {type: String, required: true},
+    description: String,
+    latlng: {
+        type: {latitude: Number, longitude: Number}, 
+        required:true
+    },
+    location: {
+        city: String,
+        zone: String,
+        street: String
+    },
+    comments: {
+        type: [Schema.Types.ObjectId],
+        ref: "Comment"
+    },
+    images: {
+        type: [Schema.Types.ObjectId],
+        ref: "Image"
+    },
+    votes: {
+        type: [Schema.Types.ObjectId],
+        ref: "Vote"
+    },
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true
+    }
 }));
 
 var Comment = mongoose.model("Comment", new Schema({
-    datetime: Date,
-    comment: String
+    datetime: {type: Date, required:true},
+    comment: String,
+    author: {type: Schema.Types.ObjectId, ref:"User", required:true}
 }));
 
 var Image = mongoose.model("Image", new Schema({
-    path: String
-}));
-
-var LatLng = mongoose.model("LatLng", new Schema({
-    latitude: Number,
-    longitude: Number
+    path: String,
+    owner: {type: Schema.Types.ObjectId, ref:"User", required:true}
 }));
 
 var Vote = mongoose.model("Vote", new Schema({
-
+    owner: {type: Schema.Types.ObjectId, ref:"User", required:true}
 }));
 
 module.exports.User = User;
 module.exports.Place = Place;
 module.exports.Comment = Comment;
 module.exports.Image = Image;
-module.exports.LatLng = LatLng;
 module.exports.Vote = Vote;
