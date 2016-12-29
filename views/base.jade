@@ -37,15 +37,15 @@ html
                         li
                             a(href="/login") Ingresar
 
-        mixin putPlaces(places)
+        mixin putPlaces(search)
             .row
-                for place in places
-                    a(href="/place/#{place._id}")
+                for current in search
+                    a(href="/place/#{current.placeId}")
                         .col-md-3.col-sm-6.mini
                             .thumbnail
-                                img(src="/imagenes/#{place.image}" class="img-responsive mini-img")
+                                img(src="/imagenes/#{current.image}" class="img-responsive mini-img")
                                 .caption
-                                    p #{place.name}
+                                    p #{current.placeName}
 
         mixin putComments(comments)
             for comment in comments

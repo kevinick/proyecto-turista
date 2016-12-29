@@ -24,8 +24,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.get("/", function (req, res) {
 
     Place.find({}).limit(8).exec(function(err, data) {
-        iterateAndShowPlaces(0, data, function() {
-            res.render("index", {places: data});
+        var join = [];
+        iteratePlacesAndJoinImage(0, data, join, function() {
+            res.render("index", {places: join});
         });
     });
 });
@@ -138,26 +139,35 @@ app.get("/search", function(req, res) {
 
     var regexp = new RegExp(req.query.pattern, "i");
     Place.find({name: regexp}, function(err, data) {
-        
-        iterateAndShowPlaces(0, data, function() {
-            res.render("search", {results: data});
+        var join = [];
+        iteratePlacesAndJoinImage(0, data, join, function() {
+            res.render("search", {results: join});
         });
-    })
+    });
 });
 
-function iterateAndShowPlaces(i, places, callback) {
+function iteratePlacesAndJoinImage(i, places, join, callback) {
 
     if (i < places.length) {
         var place = places[i];
+        var current = {
+            placeId: place._id,
+            placeName: place.name
+        };
+
         if (place.images.length > 0) {
             Image.findById(place.images[0], function(ferr, image) {
                 if (ferr) console.log(ferr);
-                place.image = image._id+"."+image.extension;
-                iterateAndShowPlaces(i + 1, places, callback);
+                //place.image = image._id+"."+image.extension;
+                current.image = !ferr ? image._id+"."+image.extension:"image.png";
+                join.push(current);
+                iteratePlacesAndJoinImage(i+1, places, join, callback);
             });
         } else {
-            place.image = "image.png";
-            iterateAndShowPlaces(i + 1, places, callback);
+            //place.image = "image.png";
+            current.image = "image.png";
+            join.push(current);
+            iteratePlacesAndJoinImage(i + 1, places, join, callback);
         }
     } else {
         callback();
