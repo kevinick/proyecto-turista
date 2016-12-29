@@ -47,7 +47,7 @@ var Comment = mongoose.model("Comment", new Schema({
 }));
 
 var Image = mongoose.model("Image", new Schema({
-    path: String,
+    extension: {type: String, required:true},
     owner: {type: Schema.Types.ObjectId, ref:"User", required:true}
 }));
 

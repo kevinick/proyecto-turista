@@ -1,0 +1,8 @@
+extends ./base.jade
+block content
+    .container
+        if results.lenght == 0
+            h4 No se encontraron resultados
+        else 
+            h4 Resultados
+            +putPlaces(results)

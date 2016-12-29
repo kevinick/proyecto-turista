@@ -15,7 +15,21 @@ body {
     background-color: transparent;
 }
 
-.mini {/*
-    height: 300px;
-    margin: 10px;*/
+.red {
+    color: red;
+}
+
+textarea {
+    resize: none;
+}
+
+.right-align {
+    text-align: right;
+}
+
+.control {
+    border: 1px #dbdbdb solid;
+    padding: 5px;
+    width: 100%;
+    border-radius: 4px;
 }

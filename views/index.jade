@@ -4,9 +4,9 @@ block content
         .jumbotron.text-center
             #mapa-principal
     .container
-
-        if names
-            +putPlaces(names)
+        h4 Sitios Recomendados
+        if places.length > 0
+            +putPlaces(places)
         else
             - console.log("Sitios recomendados vacio");
 

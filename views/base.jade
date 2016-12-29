@@ -38,12 +38,12 @@ html
                             a(href="/login") Ingresar
 
         mixin putPlaces(places)
-            h4 Sitios Recomendados
             .row
                 for place in places
-                    .col-md-3.col-sm-6
-                        .thumbnail
-                            img(src="/imagenes/image.png" style="width:100%" class="img-responsive")
-                            .caption
-                                p #{place}
+                    a(href="/place/#{place._id}")
+                        .col-md-3.col-sm-6
+                            .thumbnail
+                                img(src="/imagenes/#{place.image}" style="width:100%" class="img-responsive")
+                                .caption
+                                    p #{place.name}
         block content
