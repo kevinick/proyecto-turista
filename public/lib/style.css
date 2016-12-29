@@ -1,0 +1,21 @@
+
+body {
+    font-size: 1.55em;
+    margin-bottom: 5em;
+}
+
+#mapa-principal {
+    width:100%;
+    height:640px; 
+    border: 1px solid #AAA;
+    display: inline-block
+}
+
+.jumbotron {
+    background-color: transparent;
+}
+
+.mini {/*
+    height: 300px;
+    margin: 10px;*/
+}

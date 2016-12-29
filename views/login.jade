@@ -1,0 +1,12 @@
+extends ./base.jade
+block content
+    form(action="/login/valid" method="post")
+        p
+            label(for="username") Nombre de usuario 
+            input(type="text" id="username" name="username" required)
+        p
+            label(for="password") Contraseña 
+            input(type="password" id="password" name="password"
+            required)
+        p
+            input(type="submit" value="Enviar")
