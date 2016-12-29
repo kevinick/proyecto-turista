@@ -1,4 +1,36 @@
 extends ./base.jade
 block content
-    div(class="container")
-        
+    .container
+        h4 <b>Nombre: </b> #{place.name}
+        .text-center
+            img(src="/imagenes/#{place.image}" height="500")
+        p <b>Autor: </b> #{place.authorName}
+        hr
+
+        h4 Descripción
+        p.well.well-bg(readonly=true) #{place.description}
+
+        h4 Localización
+        p.well.well-sm <b>Ciudad: </b> #{place.location.city}
+        p.well.well-sm <b>Zona: </b> #{place.location.zone}
+        p.well.well-sm <b>Calle/Avenida: </b> #{place.location.street}
+
+        p
+            .col-sm-6.well.well-sm
+                <b>Latitud: </b> #{place.latlng.latitude}
+            .col-sm-6.well.well-sm
+                <b>Longitud: </b> #{place.latlng.longitude}
+        hr.well-bg
+
+        h4 Comentarios
+
+        +putComments([{author:"juan",date:"2016-12-29", content:"Hola"}])
+        hr
+        form(action="/place/#{place._id}/comment" method="post")
+            .panel.panel-default
+                .panel-heading <b>Deja un comentario</b>
+                .panel-body.no-padding
+                    textarea.form-control.no-border(placeholder="Comenta..." name="comment")
+            .right-align
+                button Comentar
+

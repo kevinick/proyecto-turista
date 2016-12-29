@@ -10,7 +10,7 @@ html
         script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
 
         //link(rel="stylesheet" type="text/css" href="lib/bootstrap.min.css")
-        link(rel="stylesheet" type="text/css" href="lib/style.css")
+        link(rel="stylesheet" type="text/css" href="/lib/style.css")
         //script(type="text/javascript" src="lib/jquery.js")
         //script(type="text/javascript" src="lib/jqueryui.js")
         //script(type="text/javascript" src="lib/bootstrap.min.js")
@@ -46,4 +46,11 @@ html
                                 img(src="/imagenes/#{place.image}" class="img-responsive mini-img")
                                 .caption
                                     p #{place.name}
+
+        mixin putComments(comments)
+            for comment in comments
+                .panel.panel-default
+                    .panel-heading <b>#{comment.author}</b> comentó en <b>#{comment.date}</b>
+                    .panel-body #{comment.content}
+
         block content
