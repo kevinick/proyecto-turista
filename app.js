@@ -23,12 +23,13 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.get("/", function (req, res) {
 
-    Place.find({}).limit(8).exec(function(err, data) {
-        var join = [];
-        iteratePlacesAndJoinImage(0, data, join, function() {
-            res.render("index", {places: join});
+    Place
+        .find({})
+        .populate("images")
+        .exec(function(err, data) {
+            console.log(data.length);
+            res.render("index", {places: data.slice(0, 8)});
         });
-    });
 });
 
 app.get("/login", function(req, res) {
@@ -138,14 +139,14 @@ app.get("/place/:id", function(req, res) {
 app.get("/search", function(req, res) {
 
     var regexp = new RegExp(req.query.pattern, "i");
-    Place.find({name: regexp}, function(err, data) {
-        var join = [];
-        iteratePlacesAndJoinImage(0, data, join, function() {
-            res.render("search", {results: join});
+    Place
+        .find({name: regexp})
+        .populate("images")
+        .exec(function(err, places) {
+            res.render("search", {results: places});
         });
-    });
 });
-
+/*
 function iteratePlacesAndJoinImage(i, places, join, callback) {
 
     if (i < places.length) {
@@ -172,7 +173,7 @@ function iteratePlacesAndJoinImage(i, places, join, callback) {
     } else {
         callback();
     }
-}
+}*/
 
 app.get("*", function (req, res) {
     res.render("not-found");

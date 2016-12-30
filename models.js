@@ -21,18 +21,18 @@ var Place = mongoose.model("Place",  new Schema({
         zone: String,
         street: String
     },
-    comments: {
-        type: [Schema.Types.ObjectId],
+    comments: [{
+        type: Schema.Types.ObjectId,
         ref: "Comment"
-    },
-    images: {
-        type: [Schema.Types.ObjectId],
+    }],
+    images: [{
+        type: Schema.Types.ObjectId,
         ref: "Image"
-    },
-    votes: {
-        type: [Schema.Types.ObjectId],
+    }],
+    votes: [{
+        type: Schema.Types.ObjectId,
         ref: "Vote"
-    },
+    }],
     author: {
         type: Schema.Types.ObjectId,
         ref: "User",
