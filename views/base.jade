@@ -9,31 +9,27 @@ html
         script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js")
         script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
 
-        //link(rel="stylesheet" type="text/css" href="lib/bootstrap.min.css")
         link(rel="stylesheet" type="text/css" href="/lib/style.css")
-        //script(type="text/javascript" src="lib/jquery.js")
-        //script(type="text/javascript" src="lib/jqueryui.js")
-        //script(type="text/javascript" src="lib/bootstrap.min.js")
     body
-        nav(class="navbar navbar-default")
-            div(class="container")
-                div(class="navbar-header")
-                    button(type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar" aria-expanded="false")
-                        span(class="sr-only") Toggle navigation
-                        span(class="icon-bar")
-                        span(class="icon-bar")
-                        span(class="icon-bar")
-                    a(class="navbar-brand" href="/") Turista
-                div(class="collapse navbar-collapse" id="main-navbar")
-                    ul(class="nav navbar-nav")
+        nav.navbar.navbar-default
+            .container
+                .navbar-header
+                    button.navbar-toggle.collapsed(type="button" data-toggle="collapse" data-target="#main-navbar" aria-expanded="false")
+                        span.sr-only Toggle navigation
+                        span.icon-bar
+                        span.icon-bar
+                        span.icon-bar
+                    a.navbar-brand(href="/") Turista
+                #main-navbar.collapse.navbar-collapse
+                    ul.nav.navbar-nav
                         li
                             a(href="/new-place") Crear
                         //li a(href="#") Link
-                    form(class="navbar-form navbar-left" action="/search" method="get")
-                        div(class="form-group")
-                            input(type="text" class="form-control" placeholder="Buscar..." size="30" name="pattern")
-                        button(type="submit" class="btn btn-default") Buscar
-                    ul(class="nav navbar-nav navbar-right")
+                    form.navbar-form.navbar-left(action="/search" method="get")
+                        .form-group
+                            input.form-control(type="text" placeholder="Buscar..." size="30" name="pattern")
+                        button.btn.btn-default(type="submit") Buscar
+                    ul.nav.navbar-nav.navbar-right
                         li
                             a(href="/login") Ingresar
 
