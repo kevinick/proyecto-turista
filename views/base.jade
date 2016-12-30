@@ -31,7 +31,11 @@ html
                         button.btn.btn-default(type="submit") Buscar
                     ul.nav.navbar-nav.navbar-right
                         li
-                            a(href="/login") Ingresar
+                            if user
+                                !{user + " "}
+                                a(href="/logout") logout
+                            else
+                                a(href="/login") Ingresar
 
         mixin putPlaces(places)
             .row
@@ -51,5 +55,6 @@ html
                 .panel.panel-default
                     .panel-heading <b>#{comment.author.name}</b> comentó en <b>#{comment.datetime}</b>
                     .panel-body #{comment.comment}
+
 
         block content

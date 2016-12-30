@@ -1,0 +1,15 @@
+extends ./base.jade
+block content
+    h1 Restricted page!
+    if user
+      !{user + " "}
+      a(href="/logout") logout
+    else
+      Not logged in
+    p
+      This page is only accessible for authenticated users! Psssss... This is a secret!
+    ul
+      li
+        a(href="/") Back to homepage
+      li
+        a(href="/login") Login / Register

@@ -21,6 +21,12 @@
     "connect-multiparty": "^2.0.0",
     "express": "^4.14.0",
     "jade": "^1.11.0",
-    "mongoose": "^4.7.4"
+    "mongoose": "^4.7.4",
+    "cookie-parser": "~1.4.3",
+    "emailjs": "~1.0.8",
+    "express-session": "~1.14.2",
+    "morgan": "~1.7.0",
+    "passwordless": "~1.1.2",
+    "passwordless-mongostore": "~0.1.4"
   }
 }

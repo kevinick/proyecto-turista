@@ -5,25 +5,117 @@ var app = express();
 var multipart = require("connect-multiparty");
 var fs = require("fs");
 
-var models = require("./models");
-var User = models.User;
-var Place = models.Place;
-var Comment = models.Comment;
-var Image = models.Image;
-var Vote = models.Vote;
+//------------------------------------------------------
+var path = require('path');
+var logger = require('morgan');   // it is a middleware  app.use(logger('dev'));
+var cookieParser = require('cookie-parser'); //it is a middleware app.use(cookieParser());
+var expressSession = require('express-session');
 
-var multipartMiddleware = multipart({
-    uploadDir: __dirname + "/public/imagenes"
+var passwordless = require('passwordless');
+//var passwordless = require('../../');
+
+var MongoStore = require('passwordless-mongostore');
+var email   = require("emailjs");
+
+var routes = require('./routes/index'); // este es el export de index.js
+
+
+// TODO: email setup (has to be changed) kbb15d6s3d2sggf
+var myEmail = 'applicacion.turistica@gmail.com';
+var myPwd = 'kbb15d6s3d2sggf';
+var mySmtp = 'smtp.gmail.com';
+var smtpServer  = email.server.connect({
+   user:    myEmail, 
+   password: myPwd, 
+   host:    mySmtp, 
+   ssl:     true
 });
+
+
+
+// TODO: MongoDB setup (given default can be used)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+var pathToMongoDb = 'mongodb://localhost/passwordless-simple-mail';
+
+// TODO: Path to be send via email
+var host = 'http://localhost:3000/';
+
+// Setup of Passwordless 
+passwordless.init(new MongoStore(pathToMongoDb));
+
+passwordless.addDelivery(
+    function(tokenToSend, uidToSend, recipient, callback) {
+        // Send out token
+        smtpServer.send({
+           text:    'Hello!\nYou can now access your account here: ' 
+                + host + '?token=' + tokenToSend + '&uid=' + encodeURIComponent(uidToSend), 
+           from:    myEmail, 
+           to:      recipient,
+           subject: 'Token for ' + host
+        }, function(err, message) { 
+            if(err) {
+                console.log(err);
+            }
+            callback(err);
+        });
+    });
+
+app.use(logger('dev'));  // esto es de morgan para cambiar los colores segun la respuesta
+app.use(cookieParser());
+app.use(expressSession({
+                secret: '42', 
+                saveUninitialized: false, 
+                resave: false})
+);
 app.set("view engine", "jade");
 
 app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
+app.use(passwordless.sessionSupport()); //convierte al login persistente
+app.use(passwordless.acceptToken({ successRedirect: '/' }));// valida el token que viene desde 
+                                                            //el correo del usuario 
+                                                            //sigue a addDelivery()
+                                                            //si le acepta le redirecciona
+
+// CHECK /routes/index.js to better understand which routes are needed at a minimum
+app.use('/', routes);// esto es del export a routes - index.js
+
+/*
+var multipartMiddleware = multipart({
+    uploadDir: __dirname + "/public/imagenes"
+});
+*/
+
+/// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
+
+// development error handler
+app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: err
+    });
+});
+
+app.set('port', process.env.PORT || 3000);//para establecer el puerto a escuchar
+
+var server = app.listen(app.get('port'), function() {//aqui anuncio funcionamiento y puerto
+  console.log('Express server listening on port ' + server.address().port);
+});
+//------------------------------------------------------
+
+
+
+
 
 /// No se estan usando sesiones, existe por el momento un único usuario ADMIN
-
+/*
 var ADMIN;
 User.findOne({name: "admin"}, function(err, u) {
     if (err) console.log(err);
@@ -39,137 +131,28 @@ User.findOne({name: "admin"}, function(err, u) {
     }
 });
 
-///
+*/
 
-app.get("/", function (req, res) {
 
-    console.log(res);
-    Place
-        .find({})
-        .populate("images")
-        .exec(function(err, data) {
-            if (err) console.log(err);
-            res.render("index", {places: data.slice(0, 8)});
-        });
-});
+//
 
-app.get("/login", function(req, res) {
 
-    res.render("login");
-});
 
-app.post("/login/valid", function(req, res) {
 
-    console.log(req.body.username);
-    console.log(req.body.password);
-    res.redirect("/");
-});
 
-app.get("/new-place", function(req, res) {
 
-    res.render("new-place");
-});
 
-app.post("/new-place/save", multipartMiddleware, function(req, res) {
 
-    if (req.files.file.size > 0) {
-        var ext = req.files.file.name.split(".").pop();
-        var path = req.files.file.path;
-        Image.create({
-            extension: ext,
-            owner: ADMIN._id
-        }, function (err, img){
-            if (err) {
-                console.log(err); 
-                res.render("save", { success: false });
-                return;
-            } 
-            fs.rename(
-                path, 
-                __dirname + "/public/imagenes/" + img._id + "." + ext, 
-                function(err) {
-                if (err) console.log(err);
-            });
-            createPlace(ADMIN, img, req, res);
-        });
-    } else {
-        fs.unlink(req.files.file.path);
-        createPlace(ADMIN, null, req, res);
-    }
-});
 
-function createPlace(user, img, req, res) {
 
-    Place.create({
-        name: req.body.name,
-        description: req.body.description,
-        location: {
-            city: req.body.city,
-            zone: req.body.zone,
-            street: req.body.street,
-        },
-        latlng: {
-            latitude: req.body.latitude,
-            longitude: req.body.longitude
-        },
-        date: new Date(),
-        images: img ? [img._id]:[],
-        author: user._id //required
-    }, function(err, place) {
-        if (err) {
-            console.log(err); 
-            res.render("save", {success: false});
-            return;
-        }
-        res.render("save", {success: true});
-    });
-}
 
-app.get("/place/:id", function(req, res) {
 
-    Place
-        .findById(req.params.id)
-        .populate({
-            path: "author comments images votes",
-            populate: { path: "author" }
-        })
-        .exec(function(err, data) {
-            if (err) console.log(err);
-            res.render("place", {place: data});
-        });
-});
-
-app.post("/place/:id/comment", function(req, res) {
-
-    var placeId = req.params.id;
-    Comment.create({
-        author: ADMIN._id,
-        comment: req.body.comment,
-        datetime: new Date()
-    }, function(err, comment) {
-        Place.findById(placeId, function(err, place) {
-            if (err) console.log(err);
-            place.comments.push(comment._id);
-            place.save();
-            // un id para asegurar que la página se recargue "?t="
-            res.redirect("/place/" + placeId + "?t=" + Math.random());
-        });
-    });
-});
-
-app.get("/search", function(req, res) {
-
-    var regexp = new RegExp(req.query.pattern, "i");
-    Place
-        .find({name: regexp})
-        .populate("images")
-        .exec(function(err, places) {
-            res.render("search", {results: places});
-        });
-});
-
+/*
 app.get("*", function (req, res) {
     res.render("not-found");
 });
+*/
 
-app.listen(8080);
+
+
+//app.listen(8080);
