@@ -20,7 +20,7 @@ var email   = require("emailjs");
 var routes = require('./routes/index'); // este es el export de index.js
 
 
-// TODO: email setup (has to be changed) kbb15d6s3d2sggf
+// TODO: email setup  pass kbb15d6s3d2sggf
 var myEmail = 'applicacion.turistica@gmail.com';
 var myPwd = 'kbb15d6s3d2sggf';
 var mySmtp = 'smtp.gmail.com';
@@ -73,7 +73,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(passwordless.sessionSupport()); //convierte al login persistente
-app.use(passwordless.acceptToken({ successRedirect: '/' }));// valida el token que viene desde 
+app.use(passwordless.acceptToken({ successRedirect: '/home' }));// valida el token que viene desde 
                                                             //el correo del usuario 
                                                             //sigue a addDelivery()
                                                             //si le acepta le redirecciona

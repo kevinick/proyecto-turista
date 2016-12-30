@@ -1,0 +1,17 @@
+extends ./base.jade
+block content
+    h1 Pagina Privada
+    .container
+        .jumbotron.text-center
+            #mapa-principal
+    .container
+        h4 Sitios Recomendados
+        if places.length > 0
+            +putPlaces(places)
+        else
+            - console.log("Sitios recomendados vacio");
+
+
+    script(type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v3")
+    script(type="text/javascript" src="/lib/main-map.js")
+    script(src="https://maps.googleapis.com/maps/api/js?callback=initMap")

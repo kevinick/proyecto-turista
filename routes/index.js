@@ -32,8 +32,21 @@ router.get('/', function (req, res) {
 /* GET restricted site. */
 router.get('/restricted', passwordless.restricted(),
  function(req, res) {
-  res.render('restricted', { user: req.user });
+  res.render('restricted', {places: data.slice(0, 8),user: req.user});
 });
+
+router.get('/home', passwordless.restricted(),
+	function(req,res){
+		Place
+        .find({})
+        .populate("images")
+        .exec(function(err, data) {
+            if (err) console.log(err);
+            res.render('home',{places: data.slice(0, 8),user: req.user});
+        });
+		
+	}
+);
 
 /* GET login screen. */
 router.get('/login', function(req, res) {
@@ -63,10 +76,12 @@ router.post('/sendtoken',
 	function(req, res) {
   		res.render('sent');
 });
+
 router.get("/new-place", function(req, res) {
 
     res.render("new-place",{ user: req.user });
 });
+
 router.post("/new-place/save", multipartMiddleware, function(req, res) {
 
     if (req.files.file.size > 0) {
