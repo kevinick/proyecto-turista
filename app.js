@@ -21,13 +21,34 @@ app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
+
+/// No se estan usando sesiones, existe por el momento un único usuario ADMIN
+
+var ADMIN;
+User.findOne({name: "admin"}, function(err, u) {
+    if (err) console.log(err);
+    if (u) {
+        ADMIN = u;
+    } else {
+        User.create({
+            name: "admin",
+            email: "admin@turista.com"
+        }, function(err_, admin) {
+            ADMIN = admin;
+        });
+    }
+});
+
+///
+
 app.get("/", function (req, res) {
 
+    console.log(res);
     Place
         .find({})
         .populate("images")
         .exec(function(err, data) {
-            console.log(data.length);
+            if (err) console.log(err);
             res.render("index", {places: data.slice(0, 8)});
         });
 });
@@ -51,35 +72,30 @@ app.get("/new-place", function(req, res) {
 
 app.post("/new-place/save", multipartMiddleware, function(req, res) {
 
-    User.findOne({name: "admin"}, function(err, user) {
-
-        if (!user) {console.log("No existe usuario admin"); return;}
-        if (err) {console.log(err); return;}
-
-        if (req.files.file.size > 0) {
-            var ext = req.files.file.name.split(".").pop();
-            var path = req.files.file.path;
-            Image.create({
-                extension: ext,
-                owner: user._id
-            }, function (err, img){
-                if (err) {
-                    console.log(err); 
-                    res.render("save", { success: false });
-                    return;
-                } 
-                fs.rename(path, __dirname + "/public/imagenes/" + img._id + "." + ext, function(err) {
-                    if (err) {
-                        console.log(err);
-                    }
-                });
-                createPlace(user, img, req, res);
+    if (req.files.file.size > 0) {
+        var ext = req.files.file.name.split(".").pop();
+        var path = req.files.file.path;
+        Image.create({
+            extension: ext,
+            owner: ADMIN._id
+        }, function (err, img){
+            if (err) {
+                console.log(err); 
+                res.render("save", { success: false });
+                return;
+            } 
+            fs.rename(
+                path, 
+                __dirname + "/public/imagenes/" + img._id + "." + ext, 
+                function(err) {
+                if (err) console.log(err);
             });
-        } else {
-            fs.unlink(req.files.file.path);
-            createPlace(user, null, req, res);
-        }
-    });
+            createPlace(ADMIN, img, req, res);
+        });
+    } else {
+        fs.unlink(req.files.file.path);
+        createPlace(ADMIN, null, req, res);
+    }
 });
 
 function createPlace(user, img, req, res) {
@@ -96,6 +112,7 @@ function createPlace(user, img, req, res) {
             latitude: req.body.latitude,
             longitude: req.body.longitude
         },
+        date: new Date(),
         images: img ? [img._id]:[],
         author: user._id //required
     }, function(err, place) {
@@ -110,29 +127,33 @@ function createPlace(user, img, req, res) {
 
 app.get("/place/:id", function(req, res) {
 
-    Place.findById(req.params.id, function(err, place) {
-        if (err) {
-            console.log(err);
-            res.render("not-found");
-            return;
-        }
-        User.findById(place.author, function(uerr, author) {
-            if (uerr) console.log(uerr);
-            place.authorName = author.name;
-            if (place.images.length > 0) {
-                Image.findById(place.images[0], function(ferr, image) {
-                    if (ferr) console.log(ferr);
-                    place.image = image._id+"."+image.extension;
-                    console.log(place.image);
-                    res.render("place", {place: place});
-                });
-            } else {
-                place.image = "image.png";
-                console.log(place.image);
-                res.render("place", {place: place});
-            }
+    Place
+        .findById(req.params.id)
+        .populate({
+            path: "author comments images votes",
+            populate: { path: "author" }
+        })
+        .exec(function(err, data) {
+            if (err) console.log(err);
+            res.render("place", {place: data});
         });
-        
+});
+
+app.post("/place/:id/comment", function(req, res) {
+
+    var placeId = req.params.id;
+    Comment.create({
+        author: ADMIN._id,
+        comment: req.body.comment,
+        datetime: new Date()
+    }, function(err, comment) {
+        Place.findById(placeId, function(err, place) {
+            if (err) console.log(err);
+            place.comments.push(comment._id);
+            place.save();
+            // un id para asegurar que la página se recargue "?t="
+            res.redirect("/place/" + placeId + "?t=" + Math.random());
+        });
     });
 });
 
@@ -146,34 +167,6 @@ app.get("/search", function(req, res) {
             res.render("search", {results: places});
         });
 });
-/*
-function iteratePlacesAndJoinImage(i, places, join, callback) {
-
-    if (i < places.length) {
-        var place = places[i];
-        var current = {
-            placeId: place._id,
-            placeName: place.name
-        };
-
-        if (place.images.length > 0) {
-            Image.findById(place.images[0], function(ferr, image) {
-                if (ferr) console.log(ferr);
-                //place.image = image._id+"."+image.extension;
-                current.image = !ferr ? image._id+"."+image.extension:"image.png";
-                join.push(current);
-                iteratePlacesAndJoinImage(i+1, places, join, callback);
-            });
-        } else {
-            //place.image = "image.png";
-            current.image = "image.png";
-            join.push(current);
-            iteratePlacesAndJoinImage(i + 1, places, join, callback);
-        }
-    } else {
-        callback();
-    }
-}*/
 
 app.get("*", function (req, res) {
     res.render("not-found");

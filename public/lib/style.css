@@ -60,3 +60,7 @@ textarea {
 .no-padding {
     padding: 0;
 }
+
+.medium {
+    height: 500px;
+}

@@ -3,8 +3,12 @@ block content
     .container
         h4 <b>Nombre: </b> #{place.name}
         .text-center
-            img(src="/imagenes/#{place.image}" height="500")
-        p <b>Autor: </b> #{place.authorName}
+            if place.images.length > 0
+                - var image = place.images[0]._id + "." + place.images[0].extension
+                img.medium(src="/imagenes/#{image}")
+            else
+                img.medium(src="/imagenes/image.png")
+        p Creado por <b> #{place.author.name} </b> en fecha <b> #{place.date} </b>
         hr
 
         h4 Descripción
@@ -23,8 +27,13 @@ block content
         hr.well-bg
 
         h4 Comentarios
+        if place.comments.length > 0 || true
+            +putComments(place.comments)
+            //
+                [{author:{name:"juan"}, comment:"Muy bueno", datetime:"2016-12-29"}]
+        else
+            p Caja de comentarios vacia
 
-        +putComments([{author:"juan",date:"2016-12-29", content:"Hola"}])
         hr
         form(action="/place/#{place._id}/comment" method="post")
             .panel.panel-default

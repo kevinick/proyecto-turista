@@ -37,6 +37,10 @@ var Place = mongoose.model("Place",  new Schema({
         type: Schema.Types.ObjectId,
         ref: "User",
         required: true
+    },
+    date: {
+        type: Date,
+        required: true
     }
 }));
 

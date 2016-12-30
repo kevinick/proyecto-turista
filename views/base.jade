@@ -53,7 +53,7 @@ html
         mixin putComments(comments)
             for comment in comments
                 .panel.panel-default
-                    .panel-heading <b>#{comment.author}</b> comentó en <b>#{comment.date}</b>
-                    .panel-body #{comment.content}
+                    .panel-heading <b>#{comment.author.name}</b> comentó en <b>#{comment.datetime}</b>
+                    .panel-body #{comment.comment}
 
         block content
