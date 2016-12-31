@@ -1,3 +1,4 @@
+
 var express = require('express');
 var router = express.Router();
 var multipart = require("connect-multiparty");
@@ -8,7 +9,6 @@ var multipartMiddleware = multipart({
 
 var passwordless = require('passwordless');
 
-
 var models = require("./models");
 var User = models.User;
 var Place = models.Place;
@@ -17,17 +17,6 @@ var Image = models.Image;
 var Vote = models.Vote;
 
 /* GET home page. */
-router.get('/', function (req, res) {
-
-    console.log(res);
-    Place
-        .find({})
-        .populate("images")
-        .exec(function(err, data) {
-            if (err) console.log(err);
-            res.render("index", {places: data.slice(0, 8),user: req.user});
-        });
-});
 
 /* GET restricted site. */
 router.get('/restricted', passwordless.restricted(),
@@ -35,14 +24,14 @@ router.get('/restricted', passwordless.restricted(),
   res.render('restricted', {places: data.slice(0, 8),user: req.user});
 });
 
-router.get('/home', passwordless.restricted(),
+router.get('/', passwordless.restricted(),
 	function(req,res){
 		Place
         .find({})
         .populate("images")
         .exec(function(err, data) {
             if (err) console.log(err);
-            res.render('home',{places: data.slice(0, 8),user: req.user});
+            res.render('index',{places: data.slice(0, 8),user: req.user});
         });
 		
 	}
@@ -50,13 +39,12 @@ router.get('/home', passwordless.restricted(),
 
 /* GET login screen. */
 router.get('/login', function(req, res) {
-  res.render('login', { user: req.user });
+    res.render('login', { user: req.user });
 });
 
 /* GET logout. */
-router.get('/logout', passwordless.logout(),
-	function(req, res) {
-  res.redirect('/');
+router.get('/logout', passwordless.logout(), function(req, res) {
+    res.redirect('/');
 });
 
 /* POST login screen. */

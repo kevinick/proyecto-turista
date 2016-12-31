@@ -24,18 +24,19 @@ html
                     ul.nav.navbar-nav
                         li
                             a(href="/new-place") Crear
-                        //li a(href="#") Link
                     form.navbar-form.navbar-left(action="/search" method="get")
                         .form-group
                             input.form-control(type="text" placeholder="Buscar..." size="30" name="pattern")
                         button.btn.btn-default(type="submit") Buscar
                     ul.nav.navbar-nav.navbar-right
-                        li
-                            if user
-                                !{user + " "}
-                                a(href="/logout") logout
-                            else
-                                a(href="/login") Ingresar
+                        if user 
+                            li
+                                a(href="/home") #{user}
+                            li  
+                                a(href="/logout") <b>Cerrar Sesión</b>
+                        else
+                            li
+                                a(href="/login") <b>Ingresar</b>
 
         mixin putPlaces(places)
             .row
