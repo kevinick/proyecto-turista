@@ -19,6 +19,7 @@ var Image = models.Image;
 var Vote = models.Vote;
 
 
+// la única ruta que no tiene que ser restricted
 /* POST login screen. */
 router.post('/sendtoken',  passwordless.requestToken(
         // Simply accept every user
@@ -38,20 +39,18 @@ router.post('/sendtoken',  passwordless.requestToken(
 );
 
 
-/* GET logout. */
-router.get('/logout', passwordless.logout(), function(req, res) {
-    res.redirect('/');
-});
 
-
-
-
-// la ruta /app es restringida, solo puede acceder un usuario logueado
 // desde aqui todas las rutas son restringidas
 router.use("/", passwordless.restricted());
 
 router.get('/restricted', function(req, res) {
     res.render('restricted');
+});
+
+
+/* GET logout. */
+router.get('/logout', passwordless.logout(), function(req, res) {
+    res.redirect('/');
 });
 
 
