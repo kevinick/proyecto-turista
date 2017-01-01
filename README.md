@@ -2,17 +2,29 @@
 
 ## Requisitos
 
-instalar node.js
+tener instalado:
 
-instalar mongodb
+* node.js
+
+* mongodb
 
 ## Instalación
+
+dentro de la carpeta del proyecto
 
 ```bash
 $ npm install
 ```
 
 ## Ejecutar
+
+primero ejecutar mongodb
+
+```bash
+$ mongod
+```
+
+y luego iniciar el servidor
 
 ```bash
 $ node app.js
