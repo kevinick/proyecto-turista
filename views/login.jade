@@ -1,9 +1,23 @@
-extends ./base.jade
-block content
-    form(action="/sendtoken" method="post")
-        p
-            label(for="user") Email
-            br
-            input(type="text" id="user" name="user" required)
-        p
-            input(type="submit" value="Enviar")
+doctype html
+html
+    head
+        title Turista
+        meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+
+        link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js")
+        script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
+
+        link(rel="stylesheet" type="text/css" href="/lib/style.css")
+    body
+        .container
+            .text-center
+                h1 Turista
+            h4 Iniciar Sesión
+            form(action="/app/sendtoken" method="post")
+                p
+                    label(for="user") Email
+                    input#user.form-control(type="email" name="user" required=true)
+                p
+                    input(type="submit" value="Ingresar")

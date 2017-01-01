@@ -1,16 +1,18 @@
-extends ./base.jade
-block content
-    .container
-        .text-center
-            #mapa-principal
-    .container
-        h4 Sitios Recomendados
-        if places.length > 0
-            +putPlaces(places)
-        else
-            - console.log("Sitios recomendados vacio");
+doctype html
+html
+    head
+        title Turista
+        meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1")
 
+        link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js")
+        script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
 
-    script(type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v3")
-    script(type="text/javascript" src="/lib/main-map.js")
-    script(src="https://maps.googleapis.com/maps/api/js?callback=initMap")
+        link(rel="stylesheet" type="text/css" href="/lib/style.css")
+    body
+        .container
+            .jumbotron.text-center
+                h1 Bienvenido a Turista
+                p Inicia Sesión para continuar
+                    a(href="/login")  Ingresar

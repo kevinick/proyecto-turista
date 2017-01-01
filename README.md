@@ -1,11 +1,23 @@
 # proyecto-turista
 
+## Requisitos
+
 instalar node.js
 
 instalar mongodb
 
-$ node install // para instalar las dependencias
+## Instalación
 
-$ node app.js // iniciar el servidor
+```bash
+$ npm install
+```
 
-http://localhost:8080/ //en el navegador escuchar desde el puerto 8080
+## Ejecutar
+
+```bash
+$ node app.js
+```
+
+## En el navegador
+
+http://localhost:3000/

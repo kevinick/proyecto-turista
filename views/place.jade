@@ -8,7 +8,7 @@ block content
                 img.medium(src="/imagenes/#{image}")
             else
                 img.medium(src="/imagenes/image.png")
-        p Creado por <b> #{place.author.name} </b> en fecha <b> #{place.date} </b>
+        p Creado por <b> #{place.author.email} </b> en fecha <b> #{place.date} </b>
         hr
 
         h4 Descripción
@@ -35,7 +35,7 @@ block content
             p Caja de comentarios vacia
 
         hr
-        form(action="/place/#{place._id}/comment" method="post")
+        form(action="/app/place/#{place._id}/comment" method="post")
             .panel.panel-default
                 .panel-heading <b>Deja un comentario</b>
                 .panel-body.no-padding

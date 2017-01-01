@@ -8,10 +8,10 @@ var cookieParser = require('cookie-parser');
 var expressSession = require('express-session');
 var passwordless = require('passwordless');
 
+var routes = require('./routes/index'); 
+
 var MongoStore = require('passwordless-mongostore');
 var email = require("emailjs");
-
-var routes = require('./routes/index'); 
 
 // TODO: email setup  pass kbb15d6s3d2sggf
 var myEmail = 'applicacion.turistica@gmail.com';
@@ -57,6 +57,7 @@ app.use(expressSession({
                 saveUninitialized: false, 
                 resave: false})
 );
+
 app.set("view engine", "jade");
 
 app.use(express.static("public"));
@@ -71,22 +72,22 @@ app.use(passwordless.acceptToken({ successRedirect: '/app/' }));
 // si le acepta le redirecciona
 
 
-// CHECK /routes/index.js to better understand which routes are needed at a minimum
-
+// Rutas que no necesitan que el usuario este logueado
 app.get('/', function (req, res) {
 
-    Place
-        .find({})
-        .populate("images")
-        .exec(function(err, data) {
-            if (err) console.log(err);
-            res.render("index", {
-                places: data.slice(0, 8),
-                user: req.user
-            });
-        });
+    if (req.user) {
+        res.redirect("/app");
+    } else {
+        res.render("index");
+    }
 });
 
+app.get('/login', function(req, res) {
+    res.render('login', { user: req.user });
+});
+
+
+// rutas que necesitan que el usuario este logueado
 app.use('/app', routes);
 
 /// catch 404 and forward to error handler
@@ -98,41 +99,23 @@ app.use(function(req, res, next) {
 
 // development error handler
 app.use(function(err, req, res, next) {
+
     console.log(err);
-    res.status(err.status || 500);
-    res.render("not-found");
-    /*
-    res.render('error', {
-        message: err.message,
-        error: err
-    });*/
+    var error = err.status || 500;
+    res.status(error);
+    if (error >= 400 && error <= 499) {
+        res.render("error", {message: "Página no encontrada"});
+    } else if (error >= 500 && error <= 599) {
+        res.render("error", {message: "Error de servidor"});
+    } else {
+        res.render("error", {message: "Error desconocido"});
+    }
 });
 
 
-// establecer el puerto a escuchar
+// establecer el puerto y escuchar
 app.set('port', process.env.PORT || 3000);
 var server = app.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + server.address().port);
 });
 //------------------------------------------------------
-
-/*
-var ADMIN;
-User.findOne({name: "admin"}, function(err, u) {
-    if (err) console.log(err);
-    if (u) {
-        ADMIN = u;
-    } else {
-        User.create({
-            name: "admin",
-            email: "admin@turista.com"
-        }, function(err_, admin) {
-            ADMIN = admin;
-        });
-    }
-});
-
-app.get("*", function (req, res) {
-    res.render("not-found");
-});
-*/

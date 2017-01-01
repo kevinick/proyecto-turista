@@ -23,25 +23,25 @@ html
                 #main-navbar.collapse.navbar-collapse
                     ul.nav.navbar-nav
                         li
-                            a(href="/new-place") Crear
-                    form.navbar-form.navbar-left(action="/search" method="get")
+                            a(href="/app/new-place") Crear
+                    form.navbar-form.navbar-left(action="/app/search" method="get")
                         .form-group
                             input.form-control(type="text" placeholder="Buscar..." size="30" name="pattern")
                         button.btn.btn-default(type="submit") Buscar
                     ul.nav.navbar-nav.navbar-right
                         if user 
                             li
-                                a(href="/home") #{user}
+                                a(href="/app") #{user.email}
                             li  
-                                a(href="/logout") <b>Cerrar Sesión</b>
+                                a(href="/app/logout") <b>Cerrar Sesión</b>
                         else
                             li
-                                a(href="/login") <b>Ingresar</b>
+                                a(href="/login") <b>Iniciar Sesión</b>
 
         mixin putPlaces(places)
             .row
                 for place in places
-                    a(href="/place/#{place._id}")
+                    a(href="/app/place/#{place._id}")
                         .col-md-3.col-sm-6.mini
                             .thumbnail
                                 if place.images.length > 0
@@ -54,8 +54,7 @@ html
         mixin putComments(comments)
             for comment in comments
                 .panel.panel-default
-                    .panel-heading <b>#{comment.author.name}</b> comentó en <b>#{comment.datetime}</b>
+                    .panel-heading <b>#{comment.author.email}</b> comentó en <b>#{comment.datetime}</b>
                     .panel-body #{comment.comment}
-
 
         block content

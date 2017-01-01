@@ -4,26 +4,26 @@ block content
         h4 Crear referancia a un lugar
         .right-align
             p Obligatorio <span class="red"> *</span> 
-        form(action="/new-place/save" method="post" enctype="multipart/form-data")
+        form(action="/app/new-place/save" method="post" enctype="multipart/form-data")
             .form-group
                 label(for="name") Nombre <span class="red">*</span>
-                input(type="text" required=true placeholder="Nombre del lugar..." id="name" name="name" class="form-control")
+                input.form-control(type="text" required=true placeholder="Nombre del lugar..." id="name" name="name")
                 label(for="description")  Descripción
-                textarea(placeholder="Descripción del lugar..." class="form-control" id="description" name="description")
+                textarea.form-control(placeholder="Descripción del lugar..." id="description" name="description")
             hr
             .form-group
                 label(for="city") Ciudad
-                input(type="text" placeholder="ej Gotica" class="form-control" id="city" name="city")
+                input.form-control(type="text" placeholder="ej Gotica" id="city" name="city")
                 label(for="zone") Zona
-                input(type="text" placeholder="ej Metropolis" class="form-control" id="zone" name="zone")
+                input.form-control(type="text" placeholder="ej Metropolis" id="zone" name="zone")
                 label(for="street") Calle/Avenida
-                input(type="text" placeholder="ej avenida principal" class="form-control" id="street" name="street")
+                input.form-control(type="text" placeholder="ej avenida principal" id="street" name="street")
             hr
             .form-group
                 label(for="latitude") Latitud <span class="red">*</span>
-                input(type="number" required=true placeholder="ej 123.456" id="latitude" name="latitude" class="form-control" step="any")
+                input.form-control(type="number" required=true placeholder="ej 123.456" id="latitude" name="latitude" step="any")
                 label(for="longitude") Longitud <span class="red">*</span>
-                input(type="number" required=true placeholder="ej 123.456" id="longitude" name="longitude" class="form-control" step="any")
+                input.form-control(type="number" required=true placeholder="ej 123.456" id="longitude" name="longitude" step="any")
             hr
             .form-group 
                 label(for="file") Subir Imágen

@@ -3,10 +3,8 @@ var mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost/turista");
 var Schema = mongoose.Schema;
 
-// importante: se debe compilar un schema usando siempre mongoose.model
 var User = mongoose.model("User", new Schema({
-    name: {type: String, required:true},
-    email: {type: String, required:true},
+    email: {type: String, required:true}
 }));
 
 var Place = mongoose.model("Place",  new Schema({
