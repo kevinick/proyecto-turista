@@ -1,4 +1,3 @@
-
 var mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost/turista");
 var Schema = mongoose.Schema;

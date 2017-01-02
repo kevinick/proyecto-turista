@@ -25,7 +25,7 @@ var smtpServer  = email.server.connect({
 });
 
 // TODO: MongoDB setup (given default can be used)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-var pathToMongoDb = 'mongodb://localhost/passwordless-simple-mail';
+var pathToMongoDb = 'mongodb://localhost/turista';
 
 // TODO: Path to be send via email
 var host = 'http://localhost:3000/';
@@ -83,7 +83,21 @@ app.get('/', function (req, res) {
 });
 
 app.get('/login', function(req, res) {
-    res.render('login', { user: req.user });
+    if (req.user) {
+        res.redirect("/app");
+    } else {
+        res.render('login');
+    }
+    
+});
+
+app.get('/createaccount', function(req, res) {
+    if (req.user) {
+        res.redirect("/app");
+    } else {
+        res.render('createaccount');
+    }
+    
 });
 
 

@@ -21,7 +21,7 @@ var Vote = models.Vote;
 
 // la única ruta que no tiene que ser restricted
 /* POST login screen. */
-router.post('/sendtoken',  passwordless.requestToken(
+router.post('/sendtoken' ,  passwordless.requestToken(
         // Simply accept every user
         function(user, delivery, callback) {
             callback(null, user);
@@ -32,7 +32,7 @@ router.post('/sendtoken',  passwordless.requestToken(
             //      else
              //         callback(null, null)
             //})
-        }), 
+        }) , 
         function(req, res) {
             res.render('sent');
         }
@@ -42,10 +42,6 @@ router.post('/sendtoken',  passwordless.requestToken(
 
 // desde aqui todas las rutas son restringidas
 router.use("/", passwordless.restricted());
-
-router.get('/restricted', function(req, res) {
-    res.render('restricted');
-});
 
 
 /* GET logout. */
@@ -82,7 +78,7 @@ router.use("/", function(req, res, next) {
 
 router.get('/', function(req, res){
 
-	Place
+    Place
         .find({})
         .populate("images")
         .exec(function(err, data) {
@@ -92,7 +88,6 @@ router.get('/', function(req, res){
             });
         });
 });
-
 
 router.get("/new-place", function(req, res) {
 
