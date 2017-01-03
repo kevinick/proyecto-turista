@@ -24,6 +24,9 @@ var Vote = models.Vote;
 router.post('/sendtoken' ,  passwordless.requestToken(
         // Simply accept every user
         function(user, delivery, callback) {
+            console.log(user);
+            console.log(delivery);
+            console.log(callback);
             callback(null, user);
             // usually you would want something like:
             //User.find({email: user}, callback(ret) {

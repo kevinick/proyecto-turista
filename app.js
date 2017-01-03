@@ -1,17 +1,26 @@
 
 var express = require("express");
 var bodyParser = require("body-parser");
+var http = require('http');
 var app = express();
+
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);
+
 
 var logger = require('morgan');   
 var cookieParser = require('cookie-parser');
 var expressSession = require('express-session');
 var passwordless = require('passwordless');
 
+
+
 var routes = require('./routes/index'); 
 
 var MongoStore = require('passwordless-mongostore');
 var email = require("emailjs");
+
+
 
 // TODO: email setup  pass kbb15d6s3d2sggf
 var myEmail = 'applicacion.turistica@gmail.com';
@@ -128,8 +137,7 @@ app.use(function(err, req, res, next) {
 
 
 // establecer el puerto y escuchar
-app.set('port', process.env.PORT || 3000);
-var server = app.listen(app.get('port'), function() {
-  console.log('Express server listening on port ' + server.address().port);
-});
+server.listen(3000);
+//console.log('Express server listening on port ' + server.address().port);
+
 //------------------------------------------------------
