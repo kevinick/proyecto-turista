@@ -9,6 +9,9 @@ html
         script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js")
         script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
 
+        link(rel="stylesheet", href="/lib/normalize.css")
+        link(rel="stylesheet", href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css")
+        link(rel="stylesheet", href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css")
         link(rel="stylesheet" type="text/css" href="/lib/style.css")
     body
         nav.navbar.navbar-default
@@ -31,7 +34,7 @@ html
                     ul.nav.navbar-nav.navbar-right
                         if user 
                             li
-                                a(href="/app") #{user.email}
+                                a(href="/app") #{user.name}
                             li  
                                 a(href="/app/logout") <b>Cerrar Sesión</b>
                         else
@@ -54,7 +57,7 @@ html
         mixin putComments(comments)
             for comment in comments
                 .panel.panel-default
-                    .panel-heading <b>#{comment.author.email}</b> comentó en <b>#{comment.datetime}</b>
+                    .panel-heading <b>#{comment.author.name}</b> comentó en <b>#{comment.datetime}</b>
                     .panel-body #{comment.comment}
 
         block content

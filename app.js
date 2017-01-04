@@ -1,14 +1,16 @@
 
 var express = require("express");
 var bodyParser = require("body-parser");
+var http = require('http');
 var app = express();
 
-var logger = require('morgan');   
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);
+
+var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var expressSession = require('express-session');
 var passwordless = require('passwordless');
-
-var routes = require('./routes/index'); 
 
 var MongoStore = require('passwordless-mongostore');
 var email = require("emailjs");
@@ -37,11 +39,11 @@ passwordless.addDelivery(
     function(tokenToSend, uidToSend, recipient, callback) {
         // Send out token
         smtpServer.send({
-           text:    'Hello!\nYou can now access your account here: ' 
+           text:    'Hola!\nAhora puede acceder a su cuenta: ' 
                 + host + '?token=' + tokenToSend + '&uid=' + encodeURIComponent(uidToSend), 
            from:    myEmail, 
            to:      recipient,
-           subject: 'Token for ' + host
+           subject: 'Token para ' + host
         }, function(err, message) { 
             if(err) {
                 console.log(err);
@@ -56,7 +58,7 @@ app.use(expressSession({
                 secret: '42', 
                 saveUninitialized: false, 
                 resave: false})
-);
+    );
 
 app.set("view engine", "jade");
 
@@ -65,7 +67,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(passwordless.sessionSupport()); //convierte al login persistente
-app.use(passwordless.acceptToken({ successRedirect: '/app/' }));
+app.use(passwordless.acceptToken({ successRedirect: '/app' }));
 // valida el token que viene desde 
 // el correo del usuario 
 // sigue a addDelivery()
@@ -83,6 +85,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/login', function(req, res) {
+    
     if (req.user) {
         res.redirect("/app");
     } else {
@@ -92,44 +95,61 @@ app.get('/login', function(req, res) {
 });
 
 app.get('/createaccount', function(req, res) {
+    
     if (req.user) {
         res.redirect("/app");
     } else {
         res.render('createaccount');
     }
-    
+});
+
+
+var User = require("./routes/models").User;
+app.post("/new-user", 
+    passwordless.requestToken(function(user, delivery, callback, req) {
+
+    callback(null, user);
+}), function(req, res) {
+
+    var usrEmail = req.body.user;
+    User.findOne({email: usrEmail}, function(err, user) {
+        if (!user) {
+            User.create({
+                name: req.body.name,
+                email: usrEmail
+            }, function(cerr, ret) {
+                if (cerr) console.log(cerr);
+                res.render("sent", {
+                    message: "Por favor revise su bandeja de entrada y acceda al link para completar el registro"
+                });
+            });
+        } else {
+            res.render("sent", {
+                message: "Usted ya tiene una cuenta registrada. Por favor revise su bandeja de entrada y acceda al link para iniciar sesión"
+            });
+        }
+    });
 });
 
 
 // rutas que necesitan que el usuario este logueado
-app.use('/app', routes);
+app.use('/app', require('./routes/index'));
 
-/// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+// Error 404
+app.get("*", function(req, res) {
+
+    res.render("error", {message: "Página no encontrada"});
 });
-
-// development error handler
-app.use(function(err, req, res, next) {
-
-    console.log(err);
-    var error = err.status || 500;
-    res.status(error);
-    if (error >= 400 && error <= 499) {
-        res.render("error", {message: "Página no encontrada"});
-    } else if (error >= 500 && error <= 599) {
-        res.render("error", {message: "Error de servidor"});
-    } else {
-        res.render("error", {message: "Error desconocido"});
-    }
+io.sockets.on('connection', function (socket){
+    socket.on('coords:me', function (data){
+        console.log(data);
+        console.log("---------->>>>>>>>>>>>><<<<<<<<<<<<.......--------");
+        
+    });
+    socket.emit('news',{hello: 'world'});
 });
-
 
 // establecer el puerto y escuchar
-app.set('port', process.env.PORT || 3000);
-var server = app.listen(app.get('port'), function() {
-  console.log('Express server listening on port ' + server.address().port);
-});
-//------------------------------------------------------
+server.listen(3000);
+console.log('Server listening on port 3000');
+
