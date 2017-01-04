@@ -11,13 +11,18 @@ block content
         p Creado por <b> #{place.author.name} </b> en fecha <b> #{place.date} </b>
         hr
 
-        h4 Descripción
-        p.well.well-bg(readonly=true) #{place.description}
+        if place.description
+            h4 Descripción
+            p.well.well-bg(readonly=true) #{place.description}
 
         h4 Localización
-        p.well.well-sm <b>Ciudad: </b> #{place.location.city}
-        p.well.well-sm <b>Zona: </b> #{place.location.zone}
-        p.well.well-sm <b>Calle/Avenida: </b> #{place.location.street}
+        - var loc = place.location
+        if loc.city
+            p.well.well-sm <b>Ciudad: </b> #{place.location.city}
+        if loc.zone
+            p.well.well-sm <b>Zona: </b> #{place.location.zone}
+        if loc.street
+            p.well.well-sm <b>Calle/Avenida: </b> #{place.location.street}
 
         p
             .col-sm-6.well.well-sm
