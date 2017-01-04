@@ -8,7 +8,7 @@ block content
                 img.medium(src="/imagenes/#{image}")
             else
                 img.medium(src="/imagenes/image.png")
-        p Creado por <b> #{place.author.email} </b> en fecha <b> #{place.date} </b>
+        p Creado por <b> #{place.author.name} </b> en fecha <b> #{place.date} </b>
         hr
 
         h4 Descripción
@@ -29,8 +29,6 @@ block content
         h4 Comentarios
         if place.comments.length > 0 || true
             +putComments(place.comments)
-            //
-                [{author:{name:"juan"}, comment:"Muy bueno", datetime:"2016-12-29"}]
         else
             p Caja de comentarios vacia
 
@@ -41,5 +39,5 @@ block content
                 .panel-body.no-padding
                     textarea.form-control.no-border(placeholder="Comenta..." name="comment")
             .right-align
-                button Comentar
+                button.btn.btn-default Comentar
 

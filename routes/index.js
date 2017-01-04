@@ -20,31 +20,28 @@ var Vote = models.Vote;
 
 
 // la única ruta que no tiene que ser restricted
-/* POST login screen. */
-router.post('/sendtoken' ,  passwordless.requestToken(
-        // Simply accept every user
-        function(user, delivery, callback) {
+router.post("/sendtoken", 
+    passwordless.requestToken(function(user, delivery, callback, req) {
             console.log(user);
-            console.log(delivery);
-            console.log(callback);
-            callback(null, user);
-            // usually you would want something like:
-            //User.find({email: user}, callback(ret) {
-            //      if(ret)
-            //          callback(null, ret.id)
-            //      else
-             //         callback(null, null)
-            //})
-        }) , 
-        function(req, res) {
-            res.render('sent');
-        }
+            User.findOne({email: user}, function(err, ret) {
+                if (!ret) {
+                    callback(null, null);
+                } else {
+                    callback(null, user);
+                }
+            });
+        }, {failureRedirect: "/createaccount"}) , 
+    function(req, res) {
+        res.render("sent", {
+            message: "Por favor revise su bandeja de entrada y acceda al link para iniciar sesión"
+        });
+    }
 );
 
 
 
 // desde aqui todas las rutas son restringidas
-router.use("/", passwordless.restricted());
+router.use("/", passwordless.restricted({failureRedirect: "/login"}));
 
 
 /* GET logout. */
@@ -67,10 +64,8 @@ router.use("/", function(req, res, next) {
         var userEmail = req.user;
         User.findOne({email: userEmail}, function(err, user) {
             if (!user) {
-                User.create({email: userEmail}, function(err, user) {
-                    res.locals.user = user;
-                    next();
-                });
+                console.log("Usuario no encontrado");
+                res.send("ERROR. Usuario no encontrado");
             } else {
                 res.locals.user = user;
                 next();                
@@ -189,6 +184,10 @@ router.post("/place/:id/comment", function(req, res) {
 
 router.get("/search", function(req, res) {
 
+    if (req.query.pattern == "") {
+        res.render("search", {results: []});
+        return;
+    }
     var regexp = new RegExp(req.query.pattern, "i");
     Place
         .find({name: regexp})

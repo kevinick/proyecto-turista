@@ -13,19 +13,20 @@ html
     body
         .container
             .text-center
-                h1 Crear Cuenta
-            h4 Registrarte
-            form(action="/" method="post")
+                h1 Turista
+            h4 Registrarse
+            p Campos obligatorios <span class="red">*</span>
+            form(action="/new-user" method="post")
                 p
-                    label(for="nombre") Nombre
-                    input#user.form-control(type="text" name="nombre" required=true)
-                p
+                    label(for="name") <span class="red">*</span> Nombre 
+                    input#name.form-control(type="text" name="name" required=true)
+                //p
                     label(for="apellido") Apellidos
                     input#user.form-control(type="text" name="apellido" required=true)
                 p
-                    label(for="user") Email
+                    label(for="user") <span class="red">*</span> Correo
                     input#user.form-control(type="email" name="user" required=true)
-                p
+                //p
                     label Fecha Nacimiento:
                     br
                     select
@@ -125,13 +126,13 @@ html
                         option(value="1972") 1972
                         option(value="1971") 1971
                         option(value="1970") 1970
-                p
+                //p
                     input(name="sex" value="1" type="radio") 
                     | Mujer   
                     input(name="sex" value="2" type="radio")
                     | Hombre   
-                p
-                    input(type="submit" value="Crear")
+                p.text-center
+                    input.btn.btn-default(type="submit" value="Registrar")
                 p
                     a(href="/") Ir a la página principal
 
