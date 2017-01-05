@@ -15,6 +15,13 @@ var passwordless = require('passwordless');
 var MongoStore = require('passwordless-mongostore');
 var email = require("emailjs");
 
+var models = require("./routes/models");
+var User = models.User;
+var Place = models.Place;
+var Comment = models.Comment;
+var Image = models.Image;
+var Vote = models.Vote;
+
 // TODO: email setup  pass kbb15d6s3d2sggf
 var myEmail = 'applicacion.turistica@gmail.com';
 var myPwd = 'kbb15d6s3d2sggf';
@@ -143,10 +150,17 @@ app.get("*", function(req, res) {
 io.sockets.on('connection', function (socket){
     socket.on('coords:me', function (data){
         console.log(data);
-        console.log("---------->>>>>>>>>>>>><<<<<<<<<<<<.......--------");
-        
+    
     });
-    socket.emit('news',{hello: 'world'});
+    //Place.remove({_id: "58697466f249db0cdb8d5fdd"}, function(error){
+      
+   //});
+    Place.find({}, function(err, data) {
+        socket.emit('news',data);
+        console.log(data);
+    });
+    
+    
 });
 
 // establecer el puerto y escuchar
