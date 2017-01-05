@@ -1,3 +1,4 @@
+
 var express = require('express');
 var router = express.Router();
 var multipart = require("connect-multiparty");
@@ -147,40 +148,6 @@ function createPlace(user, img, req, res) {
     });
 }
 
-router.get("/place/:id", function(req, res) {
-
-    Place
-        .findById(req.params.id)
-        .populate({
-            path: "author comments images votes",
-            populate: { path: "author" }
-        })
-        .exec(function(err, data) {
-            if (err) console.log(err);
-            res.render("place", {place: data});
-        });
-});
-
-router.post("/place/:id/comment", function(req, res) {
-
-    var placeId = req.params.id;
-    var user = res.locals.user;
-    console.log(req.params.id);
-    Comment.create({
-        author: user._id,
-        comment: req.body.comment,
-        datetime: new Date()
-    }, function(err, comment) {
-        Place.findById(placeId, function(err, place) {
-            if (err) console.log(err);
-            place.comments.push(comment._id);
-            place.save();
-            // un id para asegurar que la página se recargue "?t="
-            res.redirect("/app/place/" + placeId + "?t=" + Math.random());
-        });
-    });
-});
-
 router.get("/search", function(req, res) {
 
     if (req.query.pattern == "") {
@@ -195,5 +162,8 @@ router.get("/search", function(req, res) {
             res.render("search", {results: places});
         });
 });
+
+// ruta modular para place
+router.use("/place", require("./place"));
 
 module.exports = router;

@@ -27,6 +27,10 @@ textarea {
     text-align: right;
 }
 
+.left-align {
+    text-align: left;
+}
+
 .control {
     border: 1px #dbdbdb solid;
     padding: 5px;
@@ -63,4 +67,8 @@ textarea {
 
 .medium {
     height: 500px;
+}
+
+.padding-top {
+    padding-top: 20px;
 }

@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 
 var User = mongoose.model("User", new Schema({
     name: {type: String, required: true},
-    email: {type: String, required:true}
+    email: {type: String, required: true}
 }));
 
 var Place = mongoose.model("Place",  new Schema({

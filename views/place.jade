@@ -1,14 +1,27 @@
 extends ./base.jade
 block content
     .container
-        h4 <b>Nombre: </b> #{place.name}
-        .text-center
+        .row
+            .col-sm-6
+                p <b>Nombre: </b> #{place.name}
+            .col-sm-6
+                p <b>Latitud: </b> #{place.latlng.latitude} <b> Longitud: </b> #{place.latlng.longitude}
+        #mimapa
+        //.text-center
             if place.images.length > 0
                 - var image = place.images[0]._id + "." + place.images[0].extension
                 img.medium(src="/imagenes/#{image}")
             else
                 img.medium(src="/imagenes/image.png")
-        p Creado por <b> #{place.author.name} </b> en fecha <b> #{place.date} </b>
+        .padding-top.row
+            .col-sm-8
+                p Creado por <b> #{place.author.name} </b> en fecha <b> #{place.date} </b>
+            .col-sm-4
+                a(href="/app/place/#{place._id}/images") Imágenes >>
+        .right-align
+            p <b>Votos</b> #{place.votes.length} 
+                if !userVote 
+                    a(href="/app/place/#{place._id}/vote").btn.btn-default Votar
         hr
 
         if place.description
@@ -45,4 +58,7 @@ block content
                     textarea.form-control.no-border(placeholder="Comenta..." name="comment")
             .right-align
                 button.btn.btn-default Comentar
-
+    script(src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
+    script(src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js")
+    script(src="/socket.io/socket.io.js")
+    script(src="/lib/main-map.js")
