@@ -15,25 +15,47 @@ router.get("/:id", function(req, res) {
         .findById(req.params.id)
         .populate({
             path: "author comments images votes",
-            populate: { path: "author" }
+            populate: { path: "author owner" }
         })
-        .exec(function(err, data) {
-            if (!data) {
+        .exec(function(err, place) {
+            if (!place) {
                 console.log(err);
                 res.redirect("error", {
                     message: "No existe la referencia al lugar"
                 });
                 return;
             }
-            res.render("place", {place: data});
+            var userVote = checkUserVote(res.locals.user, place.votes);
+            res.render("place", {
+                place: place, 
+                userVote: userVote
+            });
         });
 });
+
+function checkUserVote(user, votes) {
+
+    var userVote = false;
+    var i = 0;
+    var userid = user._id.toString();
+    var ownerid;
+    while (i < votes.length && !userVote) {
+        ownerid = votes[i].owner._id.toString();
+        userVote = userid === ownerid;
+        i++;
+    }
+    return userVote;
+}
+
+function simpleId() {
+
+    return Math.round(Math.random() * 100);
+}
 
 router.post("/:id/comment", function(req, res) {
 
     var placeId = req.params.id;
     var user = res.locals.user;
-    console.log(req.params.id);
     Comment.create({
         author: user._id,
         comment: req.body.comment,
@@ -50,18 +72,36 @@ router.post("/:id/comment", function(req, res) {
             place.comments.push(comment._id);
             place.save();
             // un id para asegurar que la página se recargue "?t="
-            res.redirect("/app/place/" + placeId + "?t=" + Math.random());
+            res.redirect("/app/place/" + placeId + "?t=" + simpleId());
         });
     });
 });
 
 router.get("/:id/vote", function(req, res) {
 
-    res.send("votar");
+    var placeId = req.params.id;
+    var user = res.locals.user;
+    Vote.create({
+        owner: user._id
+    }, function (err, vote) {
+        Place.findById(placeId, function(err, place) {
+            if (!place) {
+                console.log(err);
+                res.redirect("error", {
+                    message: "No existe la referencia al lugar"
+                });
+                return;
+            }
+            place.votes.push(vote._id);
+            place.save();
+            res.redirect("/app/place/" + placeId + "?t=" + simpleId());
+        })
+    });
 });
 
 router.get("/:id/images", function(req, res) {
 
+    res.render("images");
 });
 
 module.exports = router;
