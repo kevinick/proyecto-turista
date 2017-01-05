@@ -10,6 +10,14 @@ block content
                 input.form-control(type="text" required=true placeholder="Nombre del lugar..." id="name" name="name")
                 label(for="description")  Descripción
                 textarea.form-control(placeholder="Descripción del lugar..." id="description" name="description")
+                label(for="type") Tipo
+                select.form-control(name="type" id="type")
+                    option(value="Ninguno") Ninguno
+                    option(value="Restaurante") Restaurante
+                    option(value="Mercado") Mercado
+                    option(value="Hospital") Hospital
+                    option(value="Hote") Hotel
+                    option(value="Parque") Parque
             hr
             .form-group
                 label(for="city") Ciudad

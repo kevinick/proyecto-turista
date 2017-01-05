@@ -147,9 +147,10 @@ app.get("*", function(req, res) {
 
     res.render("error", {message: "Página no encontrada"});
 });
+
 io.sockets.on('connection', function (socket){
     socket.on('coords:me', function (data){
-        console.log(data);
+        //console.log(data);
     
     });
     //Place.remove({_id: "58697466f249db0cdb8d5fdd"}, function(error){
@@ -157,7 +158,7 @@ io.sockets.on('connection', function (socket){
    //});
     Place.find({}, function(err, data) {
         socket.emit('news',data);
-        console.log(data);
+        //console.log(data);
     });
     
     

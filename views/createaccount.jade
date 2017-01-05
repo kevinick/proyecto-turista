@@ -18,13 +18,13 @@ html
             p Campos obligatorios <span class="red">*</span>
             form(action="/new-user" method="post")
                 p
-                    label(for="name") <span class="red">*</span> Nombre 
+                    label(for="name") Nombre <span class="red">*</span>
                     input#name.form-control(type="text" name="name" required=true)
                 //p
                     label(for="apellido") Apellidos
                     input#user.form-control(type="text" name="apellido" required=true)
                 p
-                    label(for="user") <span class="red">*</span> Correo
+                    label(for="user") Correo <span class="red">*</span>
                     input#user.form-control(type="email" name="user" required=true)
                 //p
                     label Fecha Nacimiento:

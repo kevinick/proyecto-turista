@@ -7,12 +7,6 @@ block content
             .col-sm-6
                 p <b>Latitud: </b> #{place.latlng.latitude} <b> Longitud: </b> #{place.latlng.longitude}
         #mimapa
-        //.text-center
-            if place.images.length > 0
-                - var image = place.images[0]._id + "." + place.images[0].extension
-                img.medium(src="/imagenes/#{image}")
-            else
-                img.medium(src="/imagenes/image.png")
         .padding-top.row
             .col-sm-8
                 p Creado por <b> #{place.author.name} </b> en fecha <b> #{place.date} </b>
@@ -26,7 +20,9 @@ block content
 
         if place.description
             h4 Descripción
-            p.well.well-bg(readonly=true) #{place.description}
+            p.well.well-sm #{place.description}
+
+        p.well.well-sm <b>Tipo: </b>#{place.type}
 
         h4 Localización
         - var loc = place.location

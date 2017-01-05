@@ -1,5 +1,6 @@
 
 var mongoose = require("mongoose");
+mongoose.Promise = require("bluebird");
 mongoose.connect("mongodb://localhost/turista");
 var Schema = mongoose.Schema;
 
@@ -44,7 +45,8 @@ var Place = mongoose.model("Place",  new Schema({
     date: {
         type: Date,
         required: true
-    }
+    },
+    type: String
 }));
 
 var Comment = mongoose.model("Comment", new Schema({

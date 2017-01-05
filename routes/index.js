@@ -22,7 +22,6 @@ var Vote = models.Vote;
 // la única ruta que no tiene que ser restricted
 router.post("/sendtoken", 
     passwordless.requestToken(function(user, delivery, callback, req) {
-            console.log(user);
             User.findOne({email: user}, function(err, ret) {
                 if (!ret) {
                     callback(null, null);
@@ -123,6 +122,7 @@ router.post("/new-place/save", multipartMiddleware, function(req, res) {
 
 function createPlace(user, img, req, res) {
 
+    console.log(req.body.type);
     Place.create({
         name: req.body.name,
         description: req.body.description,
@@ -137,7 +137,8 @@ function createPlace(user, img, req, res) {
         },
         date: new Date(),
         images: img ? [img._id]:[],
-        author: user._id //required
+        author: user._id, //required
+        type: req.body.type
     }, function(err, place) {
         if (err) {
             console.log(err); 

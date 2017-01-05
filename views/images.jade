@@ -1,25 +1,35 @@
 extends ./base.jade
 block content
     .container
-        if images.length == 0
-            h4 Imágenes vacio
-        else
-            .figure
+        .figure
+            if images.length > 0
                 img#main-img(src="/imagenes/#{images[0].getFileName()}")
                 #caption.fig-caption
                     p Subido por <b>#{images[0].owner.name}</b>
-            hr
-            h4 Todas las imágenes
-            - var i = 0
-            while i < images.length
-                .row
-                    while i < images.length
-                        - var image = images[i]
+            else 
+                img#main-img(src="/imagenes/image.png")
+                #caption.fig-caption
+        hr
+        .row
+            .col-sm-6
+                h4 Todas las imágenes
+            .col-sm-6
+                form(action="/app/place/#{placeId}/images/upload" method="post" enctype="multipart/form-data")
+                    .row
+                        .col-sm-8
+                            input(type="file" name="file"  style={"border": "1px #dbdbdb solid", "width": "100%", "border-radius": "4px"})
+                        .col-sm-4
+                            button.btn.btn-default Subir imágen
+        - var i = 0
+        while i < images.length
+            .row
+                while i < images.length
+                    - var image = images[i]
 
-                        .col-sm-3.img-grid
-                            img.img-responsive(id="img-#{i}-#{image.owner.name}" src="/imagenes/#{image.getFileName()}")
+                    .col-sm-3.img-grid.col-xs-6
+                        img.img-responsive(id="img-#{i}-#{image.owner.name}" src="/imagenes/#{image.getFileName()}")
 
-                        - i ++
-                        if i % 4 == 0
-                            - break
+                    - i ++
+                    if i % 4 == 0
+                        - break
     script(src="/lib/images.js")
