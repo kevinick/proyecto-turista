@@ -20,11 +20,12 @@ router.get("/:id", function(req, res) {
         .exec(function(err, place) {
             if (!place) {
                 console.log(err);
-                res.redirect("error", {
+                res.render("error", {
                     message: "No existe la referencia al lugar"
                 });
                 return;
             }
+            console.log(place);
             var userVote = checkUserVote(res.locals.user, place.votes);
             res.render("place", {
                 place: place, 
@@ -64,7 +65,7 @@ router.post("/:id/comment", function(req, res) {
         Place.findById(placeId, function(err, place) {
             if (!place) {
                 console.log(err);
-                res.redirect("error", {
+                res.render("error", {
                     message: "No existe la referencia al lugar"
                 });
                 return;
@@ -87,7 +88,7 @@ router.get("/:id/vote", function(req, res) {
         Place.findById(placeId, function(err, place) {
             if (!place) {
                 console.log(err);
-                res.redirect("error", {
+                res.render("error", {
                     message: "No existe la referencia al lugar"
                 });
                 return;
@@ -101,7 +102,23 @@ router.get("/:id/vote", function(req, res) {
 
 router.get("/:id/images", function(req, res) {
 
-    res.render("images");
+    var placeId = req.params.id;
+    Place
+        .findById(placeId)
+        .populate({
+            path: "images",
+            populate: {path: "owner"}
+        })
+        .exec(function(err, place) {
+            if (!place) {
+                console.log(err);
+                res.render("error", {
+                    message: "No existe la referencia al lugar"
+                });
+                return;
+            }
+            res.render("images", {images: place.images});
+        });
 });
 
 module.exports = router;

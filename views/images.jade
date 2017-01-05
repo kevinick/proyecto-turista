@@ -1,4 +1,25 @@
 extends ./base.jade
 block content
     .container
-        p images
+        if images.length == 0
+            h4 Imágenes vacio
+        else
+            .figure
+                img#main-img(src="/imagenes/#{images[0].getFileName()}")
+                #caption.fig-caption
+                    p Subido por <b>#{images[0].owner.name}</b>
+            hr
+            h4 Todas las imágenes
+            - var i = 0
+            while i < images.length
+                .row
+                    while i < images.length
+                        - var image = images[i]
+
+                        .col-sm-3.img-grid
+                            img.img-responsive(id="img-#{i}-#{image.owner.name}" src="/imagenes/#{image.getFileName()}")
+
+                        - i ++
+                        if i % 4 == 0
+                            - break
+    script(src="/lib/images.js")

@@ -1,5 +1,5 @@
 doctype html
-html
+html(lang="es")
     head
         title Turista
         meta(charset="utf-8")
@@ -42,17 +42,23 @@ html
                                 a(href="/login") <b>Iniciar Sesión</b>
 
         mixin putPlaces(places)
-            .row
-                for place in places
-                    a(href="/app/place/#{place._id}")
-                        .col-md-3.col-sm-6.mini
-                            .thumbnail
-                                if place.images.length > 0
-                                    img.img-responsive.mini-img(src="/imagenes/#{place.images[0]._id}.#{place.images[0].extension}")
-                                else
-                                    img.img-responsive.mini-img(src="/imagenes/image.png")
-                                .caption
-                                    p #{place.name}
+            - var i = 0
+            while i < places.length
+                .row
+                    while i < places.length
+                        - var place = places[i]
+                        .col-md-3.col-sm-6
+                            a(href="/app/place/#{place._id}")
+                                .thumbnail
+                                    if place.images.length > 0
+                                        img.img-responsive(src="/imagenes/#{place.images[0].getFileName()}")
+                                    else
+                                        img.img-responsive(src="/imagenes/image.png")
+                                    .caption
+                                        p #{place.name}
+                        - i ++
+                        if i % 4 == 0
+                            - break
 
         mixin putComments(comments)
             for comment in comments
