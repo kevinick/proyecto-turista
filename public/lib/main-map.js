@@ -1,5 +1,6 @@
 
 function onDocumentReady() {
+
   var socket = io.connect('http://localhost');
 
   var streets = L.tileLayer('https://api.mapbox.com/styles/v1/krafty/cixjw31tp001i2socgz3zr6nx/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoia3JhZnR5IiwiYSI6ImNpeGp2YnFmZjAwMXAycW5xMDhwdzUxYmkifQ.Fn9G950BYFYebpb7Yqy01g');
@@ -20,14 +21,6 @@ function onDocumentReady() {
 
   L.control.layers(baseMaps).addTo(map);
 
-  socket.on('news',onReceivedData)
-
-  map.locate({
-    enableHighAccuracy: true
-  });
-
-  map.on('locationfound', onlocationfound);
-
   var LeafIcon = L.Icon.extend({
       options: {
           iconSize:     [48, 45],
@@ -36,10 +29,20 @@ function onDocumentReady() {
           className:  'animated-icon my-icon-id' 
       }
   });
-  var azulIcon = new LeafIcon({iconUrl: 'imagenes/marker2.ico'}),
-    verdeIcon = new LeafIcon({iconUrl: 'imagenes/marker3.ico'}),
-    posIcon = new LeafIcon({iconUrl: 'imagenes/marker5.png'}),
-    roseIcon = new LeafIcon({iconUrl: 'imagenes/marker8.ico'});
+  
+  var azulIcon = new LeafIcon({iconUrl: '/imagenes/marker2.ico'}),
+    verdeIcon = new LeafIcon({iconUrl: '/imagenes/marker3.ico'}),
+    posIcon = new LeafIcon({iconUrl: '/imagenes/marker5.png'}),
+    roseIcon = new LeafIcon({iconUrl: '/imagenes/marker8.ico'});
+
+  socket.on('news',onReceivedData);
+
+  map.locate({
+    enableHighAccuracy: true
+  });
+
+  map.on('locationfound', onlocationfound);
+
 /*
   map.on('click', function(e){
       var marker = new L.marker(e.latlng).addTo(map);

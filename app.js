@@ -148,10 +148,14 @@ app.get("*", function(req, res) {
     res.render("error", {message: "Página no encontrada"});
 });
 
+var i = 0;
+
 io.sockets.on('connection', function (socket){
 
+    console.log("call number: " + i);
+    i++;
     socket.on('coords:me', function (data){
-        //console.log(data);
+        //console.log(data.latlng);
     });
 
     Place.find({}, function(err, data) {
