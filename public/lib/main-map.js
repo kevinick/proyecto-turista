@@ -11,7 +11,8 @@ function onDocumentReady() {
   var map = L.map('mimapa', {
       center: [-17.3333,-66.1667],
       zoom: 8 ,//1 - 18 
-      layers: [streets,grayscale]
+      layers: [streets,grayscale],
+      scrollWheelZoom: false
   });
   var baseMaps = {
     "Tile": grayscale,
@@ -29,7 +30,7 @@ function onDocumentReady() {
           className:  'animated-icon my-icon-id' 
       }
   });
-  
+
   var azulIcon = new LeafIcon({iconUrl: '/imagenes/marker2.ico'}),
     verdeIcon = new LeafIcon({iconUrl: '/imagenes/marker3.ico'}),
     posIcon = new LeafIcon({iconUrl: '/imagenes/marker5.png'}),
@@ -60,19 +61,14 @@ function onDocumentReady() {
   }//Generally, events allow you to execute some function when something happens 
   //with an object (ej 'click' event, locationfound). and you can separate the function if you want
   function onReceivedData(data){
-    console.log(data);
     for (var i = 0; i< data.length; i++) {
         var marker = L.marker([data[i].latlng.latitude, data[i].latlng.longitude],{icon:azulIcon});
         var name = data[i].name;
-        marker.bindPopup(name);
-        marker.on('dblclick',dblClick);
-        function dblClick(e) {
-          window.open('/app','_blank');
-          //  alert(name);
-        }
+        var innerHTML = "<b>"+name+"</b><br><a href=\"/app/place/"+data[i]._id+"\">Abrir</a>";
+        marker.bindPopup(innerHTML);
         
         marker.addTo(map);
-        console.log(data[i].name);
+        console.log(data[i]._id);
     }
   }
 }
