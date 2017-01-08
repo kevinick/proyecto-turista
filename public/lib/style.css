@@ -101,14 +101,10 @@ textarea {
 .img-grid {
 
     padding: 5px;
-    border: 1px solid #dbdbdb;
+    border: 2px solid #dbdbdb;
 }
 
-.img-grid:hover {
-    border-color: #AAA;
-    border-width: 2px;
-}
-
-.img-grid:active {
-    border-color: #AAA;
+.img-grid:hover, .img-grid:active {
+    border-color: lightblue;
+    border-width: 3px;
 }

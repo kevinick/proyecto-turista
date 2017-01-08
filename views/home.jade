@@ -1,16 +1,16 @@
 extends ./base.jade
+block leaflet
+    link(rel="stylesheet", href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css")
 block content
     .container
-        .text-center
-            #mimapa
-    .container
+        #mimapa
+        hr
         h4 Sitios Recomendados
         if places.length > 0
             +putPlaces(places)
         else
             - console.log("Sitios recomendados vacio");
 
-    script(src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
     script(src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js")
     script(src="/socket.io/socket.io.js")
     script(src="/lib/main-map.js")

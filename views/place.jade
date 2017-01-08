@@ -1,4 +1,6 @@
 extends ./base.jade
+block leaflet
+    link(rel="stylesheet", href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css")
 block content
     .container
         .row
@@ -7,9 +9,9 @@ block content
             .col-sm-6
                 p <b>Latitud: </b> #{place.latlng.latitude} <b> Longitud: </b> #{place.latlng.longitude}
         #mimapa
-        .padding-top.row
+        .row.padding-top
             .col-sm-8
-                p Creado por <b> #{place.author.name} </b> en fecha <b> #{place.date} </b>
+                p Referencia creada por <b> #{place.author.name} </b> en fecha <b> #{place.date} </b>
             .col-sm-4
                 a(href="/app/place/#{place._id}/images") Imágenes >>
         .right-align
@@ -54,7 +56,7 @@ block content
                     textarea.form-control.no-border(placeholder="Comenta..." name="comment")
             .right-align
                 button.btn.btn-default Comentar
-    script(src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
+
     script(src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js")
     script(src="/socket.io/socket.io.js")
     script(src="/lib/main-map.js")

@@ -1,26 +1,15 @@
-doctype html
-html
-    head
-        title Turista
-        meta(charset="utf-8")
-        meta(name="viewport" content="width=device-width, initial-scale=1")
-
-        link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
-        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js")
-        script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
-
-        link(rel="stylesheet" type="text/css" href="/lib/style.css")
-    body
-        .container
-            .text-center
-                h1 Turista
-            h4 Iniciar Sesión
-            form(action="/app/sendtoken" method="post")
-                p
-                    label(for="user") Email
-                    input#user.form-control(type="email" name="user" required=true)
-                p.text-center
-                    input.btn.btn-default(type="submit" value="Ingresar")
-                p
-                    | Si no tienes un cuenta, puedes crear una nueva 
-                    a(href="/createaccount") Crear cuenta
+extends ./nologgedbase.jade
+block content
+    .container
+        .text-center
+            h1 Turista
+        h4 Iniciar Sesión
+        form(action="/app/sendtoken" method="post")
+            p
+                label(for="user") Email
+                input#user.form-control(type="email" name="user" required=true)
+            p.text-center
+                input.btn.btn-default(type="submit" value="Ingresar")
+            p
+                | Si no tienes un cuenta, puedes crear una nueva 
+                a(href="/createaccount") Crear cuenta

@@ -1,22 +1,11 @@
-doctype html
-html
-    head
-        title Turista
-        meta(charset="utf-8")
-        meta(name="viewport" content="width=device-width, initial-scale=1")
-
-        link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
-        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js")
-        script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
-
-        link(rel="stylesheet" type="text/css" href="/lib/style.css")
-    body
-        .container
-            .jumbotron.text-center
-                h1 Bienvenido a Turista
-                h3 Inicia sesión para continuar 
-                    a(href="/login") Ingresar
-                    | ,
-                    p
-                    | o registrate 
-                    a(href="/createaccount") Crear cuenta
+extends ./nologgedbase.jade
+block content
+    .container
+        .jumbotron.text-center
+            h1 Bienvenido a Turista
+            h3 Inicia sesión para continuar 
+                a(href="/login") Ingresar
+                | ,
+                p
+                | o registrate 
+                a(href="/createaccount") Crear cuenta

@@ -149,22 +149,17 @@ app.get("*", function(req, res) {
 });
 
 io.sockets.on('connection', function (socket){
+
     socket.on('coords:me', function (data){
         //console.log(data);
-    
     });
-    //Place.remove({_id: "58697466f249db0cdb8d5fdd"}, function(error){
-      
-   //});
+
     Place.find({}, function(err, data) {
         socket.emit('news',data);
         //console.log(data);
     });
-    
-    
 });
 
 // establecer el puerto y escuchar
 server.listen(3000);
 console.log('Server listening on port 3000');
-console.log(require("leaflet-routing-machine"));
