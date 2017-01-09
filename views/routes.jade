@@ -1,9 +1,15 @@
-extends .base.jade
+extends ./base.jade
 block leaflet
     link(rel="stylesheet", href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css")
+    link(rel="stylesheet" href="/lib/lrm/leaflet-routing-machine.css")
 block content
     .container
+        h3 Rutas
+        p Haga click sobre el mapa para seleccionar el inicio y fin de la ruta, cuando se ha calculado un camino puede hacer click sobre él para añadir puntos de inflexión y modificarlo.
         #routemap
 
     script(src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js")
+    script(src="/lib/lrm/leaflet-routing-machine.js")
+    script(src="/lib/lrm/Control.Geocoder.js")
+    script(src="/socket.io/socket.io.js")
     script(src="/lib/routes.js")
