@@ -53,8 +53,10 @@ function onDocumentReady() {
     var mycoords = position.latlng;
     var marker = L.marker([mycoords.lat, mycoords.lng],{icon: roseIcon});
     marker.bindPopup("Estoy por aqui");
+    /*
     marker.on('dblclick',dblClick);
     function dblClick(e) {alert(e.latlng);}
+    */
     marker.addTo(map);
     socket.emit('coords:me', {latlng: mycoords});
 
@@ -68,9 +70,22 @@ function onDocumentReady() {
         marker.bindPopup(innerHTML);
         
         marker.addTo(map);
-        console.log(data[i]._id);
     }
   }
+
+  //Poder crear un lugar despues de hacer click sobre el mapa para
+  //obtener las coordenadas primero
+  map.on("click", function(e) {
+
+    var lat = e.latlng.lat;
+    var lng = e.latlng.lng;
+    var content = '<b>Latitud:</b> '+lat+' <b><br>Longitud:</b> '+lng+'<p><a href="/app/new-place?lat='+lat+'&lng='+lng+'">Crear lugar aqui</button></a>';
+    L.popup()
+      .setContent(content)
+      .setLatLng(e.latlng)
+      .openOn(map);
+  });
+
 }
 
 $(document).ready(onDocumentReady);

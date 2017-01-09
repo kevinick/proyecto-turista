@@ -88,7 +88,12 @@ router.get('/', function(req, res){
 
 router.get("/new-place", function(req, res) {
 
-    res.render("new-place");
+    console.log(req.query.lat);
+    console.log(req.query.lng);
+    res.render("new-place", {
+        lat: req.query.lat, 
+        lng: req.query.lng
+    });
 });
 
 router.post("/new-place/save", multipartMiddleware, function(req, res) {
