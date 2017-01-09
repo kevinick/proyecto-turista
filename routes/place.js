@@ -23,7 +23,7 @@ router.get("/:id", function(req, res) {
         .findById(req.params.id)
         .populate({
             path: "author comments images votes",
-            populate: { path: "author owner" }
+            populate: { path: "creator author user" }
         })
         .exec(function(err, place) {
             if (!place) {

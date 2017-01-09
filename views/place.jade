@@ -11,7 +11,7 @@ block content
         #mimapa
         .row.padding-top
             .col-sm-8
-                p Referencia creada por <b> #{place.author.name} </b> en fecha <b> #{place.date} </b>
+                p Referencia creada por <b> #{place.creator.name} </b> en fecha <b> #{place.getDate()} </b>
             .col-sm-4
                 a(href="/app/place/#{place._id}/images") Imágenes >>
         .right-align
