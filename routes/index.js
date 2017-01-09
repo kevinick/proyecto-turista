@@ -169,6 +169,11 @@ router.get("/search", function(req, res) {
         });
 });
 
+router.get("/routes", function(req, res) {
+
+    res.render("routes");
+});
+
 // ruta modular para place
 router.use("/place", require("./place"));
 
