@@ -31,14 +31,13 @@ html(lang="es")
                             input.form-control(type="text" placeholder="Buscar..." size="30" name="pattern")
                         button.btn.btn-default(type="submit") Buscar
                     ul.nav.navbar-nav.navbar-right
-                        if user 
-                            li
-                                a(href="/app") #{user.name}
-                            li  
-                                a(href="/app/logout") <b>Cerrar Sesión</b>
-                        else
-                            li
-                                a(href="/login") <b>Iniciar Sesión</b>
+                        li
+                            a(href="/app") #{user.name}
+                        li  
+                            a(href="/app/logout") <b>Cerrar Sesión</b>
+                        //if !user
+                            - console.log("Esto no deberia pasar")
+                            - console.log(user)
 
         mixin putPlaces(places)
             - var i = 0
@@ -50,7 +49,8 @@ html(lang="es")
                             a(href="/app/place/#{place._id}")
                                 .thumbnail
                                     if place.images.length > 0
-                                        img.img-responsive(src="/imagenes/#{place.images[0].getFileName()}")
+                                        - var j = Math.round(Math.random() * (place.images.length-1))
+                                        img.img-responsive(src="/imagenes/#{place.images[j].getFileName()}")
                                     else
                                         img.img-responsive(src="/imagenes/image.png")
                                     .caption

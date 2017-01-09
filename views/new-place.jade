@@ -8,14 +8,14 @@ block content
             .form-group
                 label(for="latitude") Latitud <span class="red">*</span>
                 if lat
-                    input.form-control(type="number" required=true placeholder="ej 123.456" id="latitude" name="latitude" step="any" value="#{lat}")
+                    input.form-control(type="number" required=true placeholder="ej 123,456" id="latitude" name="latitude" step="any" value="#{lat}")
                 else
-                    input.form-control(type="number" required=true placeholder="ej 123.456" id="latitude" name="latitude" step="any")
+                    input.form-control(type="number" required=true placeholder="ej 123,456" id="latitude" name="latitude" step="any")
                 label(for="longitude") Longitud <span class="red">*</span>
                 if lng
-                    input.form-control(type="number" required=true placeholder="ej 123.456" id="longitude" name="longitude" step="any" value="#{lng}")
+                    input.form-control(type="number" required=true placeholder="ej 123,456" id="longitude" name="longitude" step="any" value="#{lng}")
                 else
-                    input.form-control(type="number" required=true placeholder="ej 123.456" id="longitude" name="longitude" step="any")
+                    input.form-control(type="number" required=true placeholder="ej 123,456" id="longitude" name="longitude" step="any")
             hr
             .form-group
                 label(for="name") Nombre <span class="red">*</span>

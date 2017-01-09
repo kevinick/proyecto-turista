@@ -53,7 +53,7 @@ function onDocumentReady() {
   function onlocationfound(position){
     var mycoords = position.latlng;
     var marker = L.marker([mycoords.lat, mycoords.lng],{icon: roseIcon});
-    marker.bindPopup("Estoy por aqui");
+    marker.bindPopup("<b>Estoy por aqui</b><br><a href=\"/app/new-place?lat="+mycoords.lat+"&lng="+mycoords.lng+"\">Crear lugar aqui</a>");
     /*
     marker.on('dblclick',dblClick);
     function dblClick(e) {alert(e.latlng);}

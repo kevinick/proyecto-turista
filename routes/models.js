@@ -54,7 +54,7 @@ place_schema.methods.getDate = function() {
 
     var date = this.date;
     return date.getFullYear() + "-" + 
-        fillZeros(date.getMonth(), 2) + "-" +
+        fillZeros(date.getMonth() + 1, 2) + "-" +
         fillZeros(date.getDate(), 2);
 };
 

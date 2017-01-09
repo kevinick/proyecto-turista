@@ -1,0 +1,9 @@
+extends ./base.jade
+block content
+    .container
+        if success
+            .alert.alert-success.
+                <strong>Exito!</strong> #{message}
+        else
+            .alert.alert-danger.
+                <strong>Fallo!</string> #{message}

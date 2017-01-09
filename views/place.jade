@@ -13,7 +13,7 @@ block content
             .col-sm-8
                 p Referencia creada por <b> #{place.creator.name} </b> en fecha <b> #{place.getDate()} </b>
             .col-sm-4
-                a(href="/app/place/#{place._id}/images") Imágenes >>
+                a(href="/app/place/#{place._id}/images") Imagenes >>
         .right-align
             p <b>Votos</b> #{place.votes.length} 
                 if !userVote 

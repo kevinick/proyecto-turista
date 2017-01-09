@@ -88,46 +88,43 @@ router.get('/', function(req, res){
 
 router.get("/new-place", function(req, res) {
 
-    console.log(req.query.lat);
-    console.log(req.query.lng);
     res.render("new-place", {
         lat: req.query.lat, 
         lng: req.query.lng
     });
 });
 
+
+function cannotCreateImage(err, res) {
+
+    console.log(err); 
+    res.render("success", {
+        success: true,
+        message: "La referencia fue guardada, pero no se creo la imagen"
+    });
+}
+
+function cannotCreatePlace(err, res) {
+
+    console.log(err); 
+    res.render("success", {
+        success: false,
+        message: "No se pudo crear la referencia al lugar"
+    });
+}
+
+function renameUploadImg(imgpath, name, ext) {
+
+    var newpath = path.join(
+        __dirname, "../public/imagenes/" + name + "." + ext);
+    fs.rename(imgpath, newpath,  function(err) {
+        if (err) console.log(err);
+    });
+}
+
 router.post("/new-place/save", multipartMiddleware, function(req, res) {
 
     var user = res.locals.user;
-    if (req.files.file.size > 0) {
-        var ext = req.files.file.name.split(".").pop();
-        var _path = req.files.file.path;
-        Image.create({
-            extension: ext,
-            owner: user._id
-        }, function (err, img){
-            if (err) {
-                console.log(err); 
-                res.render("save", { success: false});
-                return;
-            }
-            var newDir = path.join(
-                __dirname, 
-                "../public/imagenes/" + img._id + "." + ext);
-            fs.rename(_path, newDir,  function(err) {
-                if (err) console.log(err);
-            });
-            createPlace(user, img, req, res);
-        });
-    } else {
-        fs.unlink(req.files.file.path);
-        createPlace(user, null, req, res);
-    }
-});
-
-function createPlace(user, img, req, res) {
-
-    console.log(req.body.type);
     Place.create({
         name: req.body.name,
         description: req.body.description,
@@ -141,17 +138,48 @@ function createPlace(user, img, req, res) {
             longitude: req.body.longitude
         },
         date: new Date(),
-        images: img ? [img._id]:[],
-        creator: user._id, //required
+        images: [],
+        votes: [],
+        comments: [],
+        creator: user._id,
         type: req.body.type
     }, function(err, place) {
-        if (err) {
-            console.log(err); 
-            res.render("save", {success: false});
-            return;
-        }
-        res.render("save", {success: true});
+        if (!place) return cannotCreatePlace(err, res);
+        newPlaceCallback(place, user, req, res);
     });
+});
+
+function newPlaceCallback(place, user, req, res) {
+
+    var file = req.files.file;
+    if (file.size > 0) {
+        var ext = file.name.split(".").pop();
+        var imgpath = file.path;
+
+        Image.create({
+            extension: ext,
+            owner: user._id
+        }, function (ierr, img) {
+
+            if (!img) {
+                fs.unlink(req.files.file.path);
+                return cannotCreateImage(ierr, res);
+            }
+            renameUploadImg(imgpath, img._id, ext);
+            place.images.push(img);
+            place.save();
+            res.render("success", {
+                success: true, 
+                message: "La referencia fue guardada con exito."
+            });
+        });
+    } else {
+        fs.unlink(file.path);
+        res.render("success", {
+            success: true, 
+            message: "La referencia fue guardada con exito."
+        });
+    }
 }
 
 router.get("/search", function(req, res) {

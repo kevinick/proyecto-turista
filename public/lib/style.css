@@ -99,3 +99,9 @@ textarea {
     border-color: lightblue;
     border-width: 3px;
 }
+
+.file-control {
+    border: 1px #dbdbdb solid;
+    width: 100%; 
+    border-radius: 4px;
+}

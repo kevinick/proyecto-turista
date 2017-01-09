@@ -1,6 +1,7 @@
 extends ./base.jade
 block content
     .container
+        h4 Imagenes de <b>#{placeName}</b>
         .figure
             if images.length > 0
                 img#main-img(src="/imagenes/#{images[0].getFileName()}")
@@ -12,14 +13,14 @@ block content
         hr
         .row
             .col-sm-6
-                h4 Todas las imágenes
+                h4 Todas las imagenes
             .col-sm-6
                 form(action="/app/place/#{placeId}/images/upload" method="post" enctype="multipart/form-data")
                     .row
                         .col-sm-8
-                            input(type="file" name="file"  style={"border": "1px #dbdbdb solid", "width": "100%", "border-radius": "4px"})
+                            input.file-control(type="file" name="file" accept="image/*")
                         .col-sm-4
-                            button.btn.btn-default Subir imágen
+                            button.btn.btn-default Subir imagen
         - var i = 0
         while i < images.length
             .row
