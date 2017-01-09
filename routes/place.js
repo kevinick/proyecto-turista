@@ -22,8 +22,8 @@ router.get("/:id", function(req, res) {
     Place
         .findById(req.params.id)
         .populate({
-            path: "author comments images votes",
-            populate: { path: "creator author user" }
+            path: "creator comments images votes",
+            populate: { path: "author user" }
         })
         .exec(function(err, place) {
             if (!place) {
@@ -49,8 +49,8 @@ function checkUserVote(user, votes) {
     var userid = user._id.toString();
     var ownerid;
     while (i < votes.length && !userVote) {
-        ownerid = votes[i].owner._id.toString();
-        userVote = userid === ownerid;
+        _userid = votes[i].user._id.toString();
+        userVote = userid === _userid;
         i++;
     }
     return userVote;
@@ -86,12 +86,23 @@ router.post("/:id/comment", function(req, res) {
     });
 });
 
+function findPlace(id, callback) {
+
+    Place.findById(id, function(err, place) {
+        if (!place) {
+            console.log(err);
+        } else {
+            callback(place);
+        }
+    })
+}
+
 router.get("/:id/vote", function(req, res) {
 
     var placeId = req.params.id;
     var user = res.locals.user;
     Vote.create({
-        owner: user._id
+        user: user._id
     }, function (err, vote) {
         Place.findById(placeId, function(err, place) {
             if (!place) {

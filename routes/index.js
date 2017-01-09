@@ -142,7 +142,7 @@ function createPlace(user, img, req, res) {
         },
         date: new Date(),
         images: img ? [img._id]:[],
-        author: user._id, //required
+        creator: user._id, //required
         type: req.body.type
     }, function(err, place) {
         if (err) {
