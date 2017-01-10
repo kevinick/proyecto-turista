@@ -9,12 +9,29 @@ block content
             .col-sm-6
                 p <b>Latitud: </b> #{place.latlng.latitude} <b> Longitud: </b> #{place.latlng.longitude}
         #mimapa
-        .row.padding-top
+
+        .padding-top
+            p Referencia creada por <b> #{place.creator.name} </b> en fecha <b> #{place.getDate()} </b>
+            
+        .row
             .col-sm-8
-                p Referencia creada por <b> #{place.creator.name} </b> en fecha <b> #{place.getDate()} </b>
+                h4 Imagenes
             .col-sm-4
-                a(href="/app/place/#{place._id}/images") Imagenes >>
-        .right-align
+                a(href="/app/place/#{place._id}/images") Ver todas las imagenes >>
+
+        - var i = 0
+        - var images = place.images
+        .row
+            while i < images.length && i < 4
+                - var image = images[i]
+
+                .col-sm-3.col-xs-10
+                    .img-grid-no-effect
+                        img.img-responsive(id="img-#{i}-#{image.owner.name}" src="/imagenes/#{image.getFileName()}")
+
+                - i ++
+
+        .right-align.padding-top
             p <b>Votos</b> #{place.votes.length} 
                 if !userVote 
                     a(href="/app/place/#{place._id}/vote").btn.btn-default Votar

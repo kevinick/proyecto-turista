@@ -69,8 +69,7 @@ textarea {
 }
 
 #main-img {
-    max-width: 100%;
-    max-height: 480px;
+    height: 480px;
     border: 1px solid #dbdbdb;
 }
 
@@ -92,12 +91,18 @@ textarea {
 .img-grid {
 
     padding: 5px;
-    border: 2px solid #dbdbdb;
+    border: 1px solid #dbdbdb;
 }
 
 .img-grid:hover, .img-grid:active {
     border-color: lightblue;
-    border-width: 3px;
+    border-width: 2px;
+}
+
+.img-grid-no-effect {
+
+    padding: 5px;
+    border: 1px solid #dbdbdb;
 }
 
 .file-control {

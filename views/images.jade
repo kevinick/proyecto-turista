@@ -1,7 +1,7 @@
 extends ./base.jade
 block content
     .container
-        h4 Imagenes de <b>#{placeName}</b>
+        p Imagenes de <b>#{placeName}</b>
         .figure
             if images.length > 0
                 img#main-img(src="/imagenes/#{images[0].getFileName()}")
@@ -26,9 +26,9 @@ block content
             .row
                 while i < images.length
                     - var image = images[i]
-
-                    .col-sm-3.img-grid.col-xs-6
-                        img.img-responsive(id="img-#{i}-#{image.owner.name}" src="/imagenes/#{image.getFileName()}")
+                    .col-sm-3.col-xs-10
+                        .img-grid
+                            img.img-responsive(id="img-#{i}-#{image.owner.name}" src="/imagenes/#{image.getFileName()}")
 
                     - i ++
                     if i % 4 == 0
