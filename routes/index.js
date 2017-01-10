@@ -17,6 +17,7 @@ var Place = models.Place;
 var Comment = models.Comment;
 var Image = models.Image;
 var Vote = models.Vote;
+var Route = models.Route;
 
 
 // la única ruta que no tiene que ser restricted
@@ -113,6 +114,20 @@ function cannotCreatePlace(err, res) {
     });
 }
 
+function cannotCreateRoute(err, res) {
+
+    console.log(err);
+    res.send("No se pudo guardar la ruta");
+}
+
+function routeNotFound(err, res) {
+
+    console.log(err);
+    res.render("loggederror", {
+        message: "Ruta no encontrada"
+    });
+}
+
 function renameUploadImg(imgpath, name, ext) {
 
     var newpath = path.join(
@@ -200,6 +215,21 @@ router.get("/search", function(req, res) {
 router.get("/routes", function(req, res) {
 
     res.render("routes");
+});
+
+router.post("/routes/save", function(req, res) {
+
+    console.log(req.body.waypoints);
+    console.log(req.body.name);
+    console.log(res.locals.user._id);
+    Route.create({
+        waypoints: req.body.waypoints,
+        routename: req.body.name,
+        creator: res.locals.user._id
+    }, function(err, route) {
+        if (!route) return cannotCreateRoute(err, res);
+        res.send(route);
+    })
 });
 
 // ruta modular para place

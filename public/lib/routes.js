@@ -19,6 +19,7 @@ var baseMaps = {
     "Toner":toner
 };
 
+
 L.control.layers(baseMaps).addTo(map);
 
 var routeControl = L.Routing.control({
@@ -41,7 +42,8 @@ var routeControl = L.Routing.control({
             }
 
             return hexagecimal(latLng.lat, 'N', 'S') + ' ' + hexagecimal(latLng.lng, 'E', 'W');
-        }
+        },
+        position: "bottomleft"
     })
     .on('routingerror', function(e) {
         try {
@@ -103,6 +105,7 @@ var posIcon = new LeafIcon({iconUrl: '/imagenes/marker5.png'});
 var roseIcon = new LeafIcon({iconUrl: '/imagenes/marker8.ico'});
 
 var socket = io.connect('http://localhost');
+
 socket.on('news', function(data) {
 
     var current;
@@ -121,3 +124,86 @@ socket.on('news', function(data) {
         marker.addTo(map);
     }
 });
+
+map.locate({
+    enableHighAccuracy: true
+});
+
+map.on('locationfound', function (position) {
+
+    var mycoords = position.latlng;
+    var marker = L.marker(
+        [ mycoords.lat, mycoords.lng ],
+        { icon: roseIcon }
+    );
+    marker.bindPopup("<b>Estoy por aqui</b><br><a href=\"/app/new-place?lat="+mycoords.lat+"&lng="+mycoords.lng+"\">Crear lugar aqui</a>");
+    marker.addTo(map);
+    socket.emit('coords:me', { latlng: mycoords });
+});
+
+$('[data-toggle="tooltip"]').tooltip();
+
+
+// --- rutas con el servidor ---
+
+var _ROUTES = [];
+
+$("#saveroute").click(function(e) {
+
+    var waypoints = routeControl.getWaypoints();
+    var len = waypoints.length;
+    var routename = $("#routename").val();
+    if (routename != "" &&
+        waypoints[0].latLng && 
+        waypoints[len - 1].latLng) {
+        var data = [];
+        for (var i = 0; i< len; i++) {
+            data.push(waypoints[i].latLng);
+        }
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var route = JSON.parse(this.responseText);
+                _ROUTES.push(route);
+                fillRoutes(_ROUTES);
+            } else {
+                console.log("readyState: " +this.readyState);
+                console.log("status: " + this.status + "\n");
+            }
+        };
+        xhttp.open("post", "/app/routes/save", true);
+        xhttp.setRequestHeader("Content-Type", "application/json");
+        xhttp.send(JSON.stringify({
+            name: routename,
+            waypoints: data
+        }));
+    }
+});
+
+socket.emit("getroutes", "request all routes");
+
+socket.on("sendroutes", function(data) {
+
+    _ROUTES = _ROUTES.concat(data);
+    fillRoutes(_ROUTES);
+});
+
+function fillRoutes(routes) {
+
+    var ul = $("#allroutes");
+    ul.empty();
+    var current;
+    for (var i = 0; i< routes.length; i++) {
+        current = routes[i];
+        ul.append('<li><a href="#" onclick="onClickRoute(event,'+i+')">'+current.routename+'</a></li>');
+    }
+}
+
+function onClickRoute(e, i) {
+
+    if (_ROUTES.length > i) {
+        var route = _ROUTES[i];
+        routeControl.setWaypoints(route.waypoints);
+    }
+}

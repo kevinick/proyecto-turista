@@ -4,9 +4,18 @@ block leaflet
     link(rel="stylesheet" href="/lib/lrm/leaflet-routing-machine.css")
 block content
     .container
-        h3 Rutas
-        p Haga click sobre el mapa para seleccionar el inicio y fin de la ruta, cuando se ha calculado un camino puede hacer click sobre él para añadir puntos de inflexión y modificarlo.
-        #routemap
+        h4 Rutas <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" title="Haga click sobre el mapa para seleccionar el inicio y fin de la ruta, cuando se ha calculado un camino puede hacer click sobre él para añadir puntos de inflexión y modificarlo." data-placement="bottom" style="font-size:0.8em"></span>
+        
+        p
+            .form-inline
+                input#routename.form-control(type="text" placeholder="Nombre para guardar la ruta" size="40" data-toggle="tooltip")
+                button#saveroute.btn.btn-default Guardar ruta
+        .row
+            .col-sm-10
+                #routemap
+            .col-sm-2
+                h4 Todas las rutas
+                ul#allroutes
 
     script(src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js")
     script(src="/lib/lrm/leaflet-routing-machine.js")

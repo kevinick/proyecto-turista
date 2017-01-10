@@ -92,11 +92,18 @@ var Vote = mongoose.model("Vote", new Schema({
     user: {type: Schema.Types.ObjectId, ref:"User", required:true}
 }));
 
+var Route = mongoose.model("Route", new Schema({
+    creator: {type: Schema.Types.ObjectId, ref:"User", required:true},
+    waypoints: [{lat: Number, lng: Number}],
+    routename: {type: String, required:true}
+}));
+
 module.exports.User = User;
 module.exports.Place = Place;
 module.exports.Comment = Comment;
 module.exports.Image = Image;
 module.exports.Vote = Vote;
+module.exports.Route = Route;
 
 function fillZeros(num, len) {
 

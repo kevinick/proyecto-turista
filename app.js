@@ -21,6 +21,7 @@ var Place = models.Place;
 var Comment = models.Comment;
 var Image = models.Image;
 var Vote = models.Vote;
+var Route = models.Route;
 
 // TODO: email setup  pass kbb15d6s3d2sggf
 var myEmail = 'applicacion.turistica@gmail.com';
@@ -160,6 +161,15 @@ io.sockets.on('connection', function (socket){
         .exec(function(err, data) {
             socket.emit('news', data);
         });
+
+    socket.on("getroutes", function(msg) {
+
+        console.log(msg);
+        Route.find({}, function(err, data) {
+
+            socket.emit("sendroutes", data);
+        });
+    });
 });
 
 // establecer el puerto y escuchar
