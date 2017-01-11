@@ -29,6 +29,7 @@
     "morgan": "~1.7.0",
     "passwordless": "~1.1.2",
     "passwordless-mongostore": "~0.1.4",
-    "socket.io": "~0.9.17"
+    "socket.io": "~0.9.17",
+    "bluebird": "~3.4.7"
   }
 }
