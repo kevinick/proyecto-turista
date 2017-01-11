@@ -59,7 +59,7 @@ function onDocumentReady() {
     function dblClick(e) {alert(e.latlng);}
     */
     marker.addTo(map);
-    socket.emit('coords:me', {latlng: mycoords});
+    //socket.emit('coords:me', {latlng: mycoords});
 
   }//Generally, events allow you to execute some function when something happens 
   //with an object (ej 'click' event, locationfound). and you can separate the function if you want
@@ -87,6 +87,13 @@ function onDocumentReady() {
       .openOn(map);
   });
 
+  var _lat = $("#lat").text();
+  var _lng = $("#lng").text();
+  if (_lat && _lng) {
+    _lat = Number(_lat);
+    _lng = Number(_lng);
+    map.setView([_lat, _lng], 16);
+  }
 }
 
 $(document).ready(onDocumentReady);

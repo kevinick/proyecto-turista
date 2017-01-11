@@ -159,9 +159,9 @@ app.get("*", function(req, res) {
 
 io.sockets.on('connection', function (socket){
 
-    socket.on('coords:me', function (data){
+   // socket.on('coords:me', function (data){
         //console.log(data.latlng);
-    });
+    //});
 
     Place
         .find({})
