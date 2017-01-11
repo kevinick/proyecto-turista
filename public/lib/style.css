@@ -85,7 +85,7 @@ textarea {
 
 .simple-border {
 
-    border: 1px solid #AAA;
+    border: 1px solid #ddd;
 }
 
 .img-grid {
@@ -119,4 +119,26 @@ textarea {
 #allroutes li {
 
     text-decoration: none;
+}
+
+.tr:nth-of-type(odd) {
+
+    background-color: #eee;
+}
+
+img {
+
+    max-width: 800px;
+}
+
+.link {
+
+    background-color: transparent;
+    border: 0;
+    color: #337ab7;
+}
+
+.link:hover, .link:active {
+
+    text-decoration: underline;
 }

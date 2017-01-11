@@ -1,0 +1,39 @@
+extends ./base.jade
+block content
+
+    mixin linkForm(name, dest, method)
+        form.inline-form(action="#{dest}?_method=#{method}" method="post")
+            input.link(type="submit" value="#{name}")
+
+    .container
+        h4 Información de usuario
+        .well.well-sm
+            .row
+                .col-sm-6 <b>Nombre:</b> #{user.name} 
+                .col-sm-6 <b>Correo:</b> #{user.email}
+        hr
+        h4 Lugares creados
+        for place in places
+            .tr.simple-border.sm-padding
+                .row
+                    .col-sm-10 
+                        a(href="/app/place/#{place._id}") #{place.name}
+                    .col-sm-2
+                        +linkForm("Eliminar", "/app/place/"+ place._id, "delete")
+
+        h4.padding-top Imagenes subidas
+        for image in images
+            .tr.simple-border.sm-padding
+                .row
+                    .col-sm-10
+                        img(src="/imagenes/#{image.getFileName()}" height="100px")
+                    .col-sm-2
+                        +linkForm("Eliminar", "/app/images/"+ image._id, "delete")
+
+        h4.padding-top Rutas creadas
+        for route in routes
+            .tr.simple-border.sm-padding
+                .row
+                    .col-sm-10 #{route.routename}
+                    .col-sm-2
+                        +linkForm("Eliminar", "/app/routes/"+ route._id, "delete")

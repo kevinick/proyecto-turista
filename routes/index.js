@@ -232,6 +232,28 @@ router.post("/routes/save", function(req, res) {
     })
 });
 
+router.get("/user", function(req, res) {
+
+    var userId = res.locals.user._id;
+    Place.find({creator: userId}, function(perr, places) {
+        if (perr) console.log(perr);
+
+        Image.find({owner: userId}, function(ierr, images) {
+            if (ierr) console.log(ierr);
+
+            Route.find({creator: userId}, function(rerr, routes) {
+                if (rerr) console.log(rerr);
+
+                res.render("user", {
+                    places: places,
+                    images: images,
+                    routes: routes
+                });
+            })
+        });
+    })
+});
+
 // ruta modular para place
 router.use("/place", require("./place"));
 

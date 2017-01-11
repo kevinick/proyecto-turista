@@ -32,12 +32,9 @@ html(lang="es")
                         button.btn.btn-default(type="submit") Buscar
                     ul.nav.navbar-nav.navbar-right
                         li
-                            a(href="/app") #{user.name}
+                            a(href="/app/user") #{user.name}
                         li  
                             a(href="/app/logout") <b>Cerrar Sesión</b>
-                        //if !user
-                            - console.log("Esto no deberia pasar")
-                            - console.log(user)
 
         mixin putPlaces(places)
             - var i = 0
