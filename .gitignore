@@ -1,5 +1,8 @@
-*.exe
 node_modules/*
+*.exe
 *.png
 *.jpg
 *.gif
+*.JPG
+*.PNG
+*.GIF
