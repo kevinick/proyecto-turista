@@ -70,36 +70,75 @@ function cannontCreateComment(err, res) {
     })
 }
 
-router.get("/:id", function(req, res) {
+function placeDeleteError(err, res) {
 
-    var userid = res.locals.user._id;
-    Place
-        .findById(req.params.id)
-        .populate({
-            path: "creator comments images votes",
-            populate: { path: "author" }
-        })
-        .exec(function(err, place) {
-            if (!place) return placeNotFound(err, res);
-            var userVote = checkUserVote(userid, place.votes);
-            try {
-                var filepath = path.join(
-                    __dirname, "../views/place.jade");
-                var html = jade.renderFile(filepath, {
-                    place: place, 
-                    userVote: userVote,
-                    user: res.locals.user
-                });
-                res.send(html);
-            } catch (err) {
-                console.log(place);
-                console.log(err);
-                res.render("loggederror", {
-                    message: "Error de servidor vuelva a cargar"
-                });
-            }
+    console.log(err);
+    res.render("success", {
+        success: false,
+        message: "No se pudo borrar el lugar"
+    });
+}
+
+function removeAll(schema, objects) {
+
+    for (var i = 0; i< objects.length; i++) {
+        schema.findOneAndRemove({
+            _id: objects[i]
+        }, function(err) {
+            if (err) console.log(err);
         });
-});
+    }
+}
+
+router.route("/:id")
+    .get(function(req, res) {
+
+        var userid = res.locals.user._id;
+        Place
+            .findById(req.params.id)
+            .populate({
+                path: "creator comments images votes",
+                populate: { path: "author" }
+            })
+            .exec(function(err, place) {
+                if (!place) return placeNotFound(err, res);
+                var userVote = checkUserVote(userid, place.votes);
+                try {
+                    var filepath = path.join(
+                        __dirname, "../views/place.jade");
+                    var html = jade.renderFile(filepath, {
+                        place: place, 
+                        userVote: userVote,
+                        user: res.locals.user
+                    });
+                    res.send(html);
+                } catch (err) {
+                    console.log(place);
+                    console.log(err);
+                    res.render("loggederror", {
+                        message: "Error de servidor vuelva a cargar"
+                    });
+                }
+            });
+    })
+    .delete(function(req, res) {
+
+        var placeId = req.params.id;
+        Place
+            .findById({_id: placeId})
+            .populate("comments votes")
+            .exec(function(err, place) {
+                if (!place) return placeDeleteError(err, res);
+                removeAll(Vote, place.votes);
+                removeAll(Comment, place.comments);
+                place.remove();
+                res.render("success", {
+                    success: true,
+                    message: "Lugar eliminado"
+                });
+        });
+    });
+
 
 router.post("/:id/comment", function(req, res) {
 
@@ -178,7 +217,8 @@ router.post("/:id/images/upload",
             }
             Image.create({
                 extension: ext,
-                owner: user._id
+                owner: user._id,
+                belong: place._id
             }, function (err, img){
                 if (!img) {
                     fs.unlink(_path);

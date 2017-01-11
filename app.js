@@ -15,6 +15,8 @@ var passwordless = require('passwordless');
 var MongoStore = require('passwordless-mongostore');
 var email = require("emailjs");
 
+var methodOverride = require("method-override");
+
 var models = require("./routes/models");
 var User = models.User;
 var Place = models.Place;
@@ -74,6 +76,8 @@ app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
+app.use(methodOverride("_method"));
+
 app.use(passwordless.sessionSupport()); //convierte al login persistente
 app.use(passwordless.acceptToken({ successRedirect: '/app' }));
 // valida el token que viene desde 
@@ -111,13 +115,17 @@ app.get('/createaccount', function(req, res) {
     }
 });
 
+var emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
 
 var User = require("./routes/models").User;
 app.post("/new-user", 
     passwordless.requestToken(function(user, delivery, callback, req) {
-
-    callback(null, user);
-}), function(req, res) {
+    if (emailRegex.test(user)) {
+        callback(null, user);
+    } else {
+        callback(null, null);
+    }
+}, {failureRedirect: "/createaccount"}), function(req, res) {
 
     var usrEmail = req.body.user;
     User.findOne({email: usrEmail}, function(err, user) {

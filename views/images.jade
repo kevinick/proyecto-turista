@@ -1,7 +1,7 @@
 extends ./base.jade
 block content
     .container
-        p Imagenes de <b>#{placeName}</b>
+        h4 Imagenes de <a href="/app/place/#{placeId}">#{placeName}</a>
         .figure
             if images.length > 0
                 img#main-img(src="/imagenes/#{images[0].getFileName()}")

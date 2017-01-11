@@ -4,13 +4,19 @@ mongoose.Promise = require("bluebird");
 mongoose.connect("mongodb://localhost/turista");
 var Schema = mongoose.Schema;
 
-// email pattern => /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/
+var emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
 
 var User = mongoose.model("User", new Schema({
     name: {type: String, required: true},
     email: {
         type: String, 
-        required: true
+        required: true,
+        validate: {
+            validator: function(v) {
+                return emailRegex.test(v);
+            },
+            message: "{VALUE} no es un correo electronico válido"
+        }
     }
 }));
 
@@ -78,7 +84,8 @@ var Comment = mongoose.model("Comment", comment_schema);
 
 var image_schema = new Schema({
     extension: {type: String, required:true},
-    owner: {type: Schema.Types.ObjectId, ref:"User", required:true}
+    owner: {type: Schema.Types.ObjectId, ref:"User", required:true},
+    belong: {type: Schema.Types.ObjectId, ref:"Place", required:true}
 });
 
 image_schema.methods.getFileName = function () {

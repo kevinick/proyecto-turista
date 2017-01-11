@@ -74,22 +74,18 @@ textarea {
 }
 
 .sm-margin {
-
     margin: 10px;
 }
 
 .sm-padding {
-
     padding: 5px;
 }
 
 .simple-border {
-
     border: 1px solid #ddd;
 }
 
 .img-grid {
-
     padding: 5px;
     border: 1px solid #dbdbdb;
 }
@@ -100,7 +96,6 @@ textarea {
 }
 
 .img-grid-no-effect {
-
     padding: 5px;
     border: 1px solid #dbdbdb;
 }
@@ -112,33 +107,27 @@ textarea {
 }
 
 .map-cont-control {
-
     padding: 10px;
 }
 
 #allroutes li {
-
     text-decoration: none;
 }
 
 .tr:nth-of-type(odd) {
-
     background-color: #eee;
 }
 
 img {
-
     max-width: 800px;
 }
 
 .link {
-
     background-color: transparent;
     border: 0;
     color: #337ab7;
 }
 
 .link:hover, .link:active {
-
     text-decoration: underline;
 }

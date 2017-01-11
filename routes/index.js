@@ -128,6 +128,24 @@ function routeNotFound(err, res) {
     });
 }
 
+function routeDeleteError(err, res) {
+
+    console.log(err);
+    res.render("success", {
+        success: false,
+        message: "No se pudo borrar la ruta"
+    });
+}
+
+function imageDeleteError(err, res) {
+
+    console.log(err);
+    res.render("success", {
+        success: false,
+        message: "No se pudo borrar la imagen"
+    });
+}
+
 function renameUploadImg(imgpath, name, ext) {
 
     var newpath = path.join(
@@ -173,7 +191,8 @@ function newPlaceCallback(place, user, req, res) {
 
         Image.create({
             extension: ext,
-            owner: user._id
+            owner: user._id,
+            belong: place._id
         }, function (ierr, img) {
 
             if (!img) {
@@ -219,9 +238,6 @@ router.get("/routes", function(req, res) {
 
 router.post("/routes/save", function(req, res) {
 
-    console.log(req.body.waypoints);
-    console.log(req.body.name);
-    console.log(res.locals.user._id);
     Route.create({
         waypoints: req.body.waypoints,
         routename: req.body.name,
@@ -229,6 +245,18 @@ router.post("/routes/save", function(req, res) {
     }, function(err, route) {
         if (!route) return cannotCreateRoute(err, res);
         res.send(route);
+    })
+});
+
+router.delete("/routes/:id", function(req, res) {
+
+    var routeId = req.params.id;
+    Route.findOneAndRemove({_id: routeId}, function(err) {
+        if (err) return routeDeleteError(err, res);
+        res.render("success", {
+            success: true, 
+            message: "Ruta eliminada"
+        });
     })
 });
 
@@ -252,6 +280,45 @@ router.get("/user", function(req, res) {
             })
         });
     })
+});
+
+function removeObj(list, obj) {
+
+    var i = 0;
+    var len = list.length;
+    while (i < len) {
+        if (list[i].toString() === obj.toString()) {
+            break;
+        }
+        i++;
+    }
+    var res = list.splice(i, 1);
+    return res.length > 0;
+}
+
+router.delete("/images/:id", function(req, res) {
+
+    var imageId = req.params.id;
+    Image
+        .findById(imageId)
+        .populate("belong")
+        .exec(function(err, image) {
+            if (!image) return imageDeleteError(err, res);
+            var imgpath = path.join(
+                __dirname, "../public/imagenes/" + image.getFileName());
+            image.remove(function (err){
+                if (err) return imageDeleteError(err, res);
+                res.render("success", {
+                    success: true,
+                    message: "La imagen fue eliminada"
+                });
+                fs.unlink(imgpath);
+            });
+            var place = image.belong;
+            if (!place) return; // place fue removido antes
+            place.images.pull({_id: image._id});
+            place.save();
+        });
 });
 
 // ruta modular para place
