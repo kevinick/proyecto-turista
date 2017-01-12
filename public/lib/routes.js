@@ -99,10 +99,10 @@ var LeafIcon = L.Icon.extend({
     }
 });
 
-var azulIcon = new LeafIcon({iconUrl: '/imagenes/marker2.ico'});
-var verdeIcon = new LeafIcon({iconUrl: '/imagenes/marker3.ico'});
-var posIcon = new LeafIcon({iconUrl: '/imagenes/marker5.png'});
-var roseIcon = new LeafIcon({iconUrl: '/imagenes/marker8.ico'});
+var azulIcon = new LeafIcon({iconUrl: '/iconos/blueicon.ico'});
+var verdeIcon = new LeafIcon({iconUrl: '/iconos/blueicon.ico'});
+var posIcon = new LeafIcon({iconUrl: '/iconos/blueicon.ico'});
+var roseIcon = new LeafIcon({iconUrl: '/iconos/roseicon.ico'});
 
 var socket = io.connect('http://' + document.domain);
 
