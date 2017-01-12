@@ -1,7 +1,7 @@
 
 function onDocumentReady() {
 
-  var socket = io.connect('http://localhost');
+  var socket = io.connect('http://' + document.domain);
 
   var mapboxApiKey = 'pk.eyJ1Ijoia3JhZnR5IiwiYSI6ImNpeGp2YnFmZjAwMXAycW5xMDhwdzUxYmkifQ.Fn9G950BYFYebpb7Yqy01g';
   var streets = L.tileLayer('https://api.mapbox.com/styles/v1/krafty/cixjw31tp001i2socgz3zr6nx/tiles/256/{z}/{x}/{y}?access_token=' + mapboxApiKey);

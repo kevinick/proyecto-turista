@@ -104,7 +104,7 @@ var verdeIcon = new LeafIcon({iconUrl: '/imagenes/marker3.ico'});
 var posIcon = new LeafIcon({iconUrl: '/imagenes/marker5.png'});
 var roseIcon = new LeafIcon({iconUrl: '/imagenes/marker8.ico'});
 
-var socket = io.connect('http://localhost');
+var socket = io.connect('http://' + document.domain);
 
 socket.on('news', function(data) {
 

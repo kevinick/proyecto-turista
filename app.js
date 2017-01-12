@@ -40,7 +40,7 @@ var smtpServer  = email.server.connect({
 var pathToMongoDb = 'mongodb://localhost/turista';
 
 // TODO: Path to be send via email
-var host = 'http://localhost:3000/';
+var host = 'http://'+getIPAddress()+':3000/';
 
 // Setup of Passwordless 
 passwordless.init(new MongoStore(pathToMongoDb));
@@ -159,10 +159,6 @@ app.get("*", function(req, res) {
 
 io.sockets.on('connection', function (socket){
 
-   // socket.on('coords:me', function (data){
-        //console.log(data.latlng);
-    //});
-
     Place
         .find({})
         .select("name latlng")
@@ -181,5 +177,22 @@ io.sockets.on('connection', function (socket){
 });
 
 // establecer el puerto y escuchar
+console.log("Host => " + host);
 server.listen(3000);
-console.log('Server listening on port 3000');
+
+function getIPAddress() {
+    var interfaces = require('os').networkInterfaces();
+    for (var iname in interfaces) {
+        var iface = interfaces[iname];
+
+        for (var i = 0; i < iface.length; i++) {
+            var alias = iface[i];
+            if (alias.family === 'IPv4' && 
+                alias.address !== '127.0.0.1' && 
+                !alias.internal){
+                return alias.address;
+            }
+        }
+    }
+    throw "No cuenta con una ip valida para el servidor";
+}
