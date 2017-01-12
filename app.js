@@ -161,7 +161,7 @@ io.sockets.on('connection', function (socket){
 
     Place
         .find({})
-        .select("name latlng")
+        .select("name latlng type")
         .exec(function(err, data) {
             socket.emit('news', data);
         });

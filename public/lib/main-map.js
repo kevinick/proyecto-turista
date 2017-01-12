@@ -32,10 +32,17 @@ function onDocumentReady() {
       }
   });
 
-  var azulIcon = new LeafIcon({iconUrl: '/imagenes/marker2.ico'}),
-    verdeIcon = new LeafIcon({iconUrl: '/imagenes/marker3.ico'}),
-    posIcon = new LeafIcon({iconUrl: '/imagenes/marker5.png'}),
-    roseIcon = new LeafIcon({iconUrl: '/imagenes/marker8.ico'});
+  var sitioturistico = new LeafIcon({iconUrl: '/iconos/sitioturistico.ico'}),
+    parque = new LeafIcon({iconUrl: '/iconos/parque.ico'}),
+    restaurant = new LeafIcon({iconUrl: '/iconos/restaurant.ico'}),
+    mercado = new LeafIcon({iconUrl: '/iconos/mercado.ico'}),
+    hospital = new LeafIcon({iconUrl: '/iconos/hospital.ico'}),
+    hotel = new LeafIcon({iconUrl: '/iconos/hotel.ico'}),
+    parque = new LeafIcon({iconUrl: '/iconos/parque.ico'})
+    plaza = new LeafIcon({iconUrl: '/iconos/plaza.ico'}),
+    peligroso = new LeafIcon({iconUrl: '/iconos/peligroso.ico'}),
+    ninguno = new LeafIcon({iconUrl: '/iconos/ninguno.ico'}),
+    miposicion = new LeafIcon({iconUrl: '/iconos/miposicion.ico'});
 
   socket.on('news',onReceivedData);
 
@@ -52,7 +59,7 @@ function onDocumentReady() {
 */
   function onlocationfound(position){
     var mycoords = position.latlng;
-    var marker = L.marker([mycoords.lat, mycoords.lng],{icon: roseIcon});
+    var marker = L.marker([mycoords.lat, mycoords.lng],{icon: miposicion});
     marker.bindPopup("<b>Estoy por aqui</b><br><a href=\"/app/new-place?lat="+mycoords.lat+"&lng="+mycoords.lng+"\">Crear lugar aqui</a>");
     /*
     marker.on('dblclick',dblClick);
@@ -64,8 +71,31 @@ function onDocumentReady() {
   }//Generally, events allow you to execute some function when something happens 
   //with an object (ej 'click' event, locationfound). and you can separate the function if you want
   function onReceivedData(data){
+    console.log(data);
     for (var i = 0; i< data.length; i++) {
-        var marker = L.marker([data[i].latlng.latitude, data[i].latlng.longitude],{icon:azulIcon});
+        var marker;
+        var tipo = data[i].type + "";
+        switch (tipo){
+          case "Sitio Turistico" : icono = sitioturistico;
+                              break;
+          case "Parque" : icono = parque;
+                      break;
+          case "Restaurante" :   icono = restaurant;
+                            break;
+          case "Mercado" : icono = mercado;
+                      break;
+          case "Hospital" : icono = hospital;
+                        break;
+          case "Hotel" :   icono = hotel;
+                      break;
+          case "Plaza" :   icono = plaza;
+                      break;
+          case "Peligroso" : icono = peligroso;
+                        break;
+          default : icono = ninguno ;
+        };
+
+        var marker = L.marker([data[i].latlng.latitude, data[i].latlng.longitude],{icon: icono});
         var name = data[i].name;
         var innerHTML = "<b>"+name+"</b><br><a href=\"/app/place/"+data[i]._id+"\">Abrir</a>";
         marker.bindPopup(innerHTML);
@@ -97,31 +127,3 @@ function onDocumentReady() {
 }
 
 $(document).ready(onDocumentReady);
-
-/*CREATE ICON
-  var greenIcon = L.icon({
-    iconUrl: 'leaf-green.png',
-    shadowUrl: 'leaf-shadow.png',
-
-    iconSize:     [38, 95], // size of the icon
-    shadowSize:   [50, 64], // size of the shadow
-    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-    shadowAnchor: [4, 62],  // the same for the shadow
-    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-});
-Now putting a marker with this icon on a map is easy:
-
-L.marker([51.5, -0.09], {icon: greenIcon}).addTo(map)
-
-
-
-GRUPOS DE ICONOS
-
-var littleton = L.marker([39.61, -105.02]).bindPopup('This is Littleton, CO.'),
-    denver    = L.marker([39.74, -104.99]).bindPopup('This is Denver, CO.'),
-    aurora    = L.marker([39.73, -104.8]).bindPopup('This is Aurora, CO.'),
-    golden    = L.marker([39.77, -105.23]).bindPopup('This is Golden, CO.');
-Instead of adding them directly to the map, you can do the following, using the LayerGroup class:
-
-var cities = L.layerGroup([littleton, denver, aurora, golden]);
-*/
