@@ -25,9 +25,9 @@ var Image = models.Image;
 var Vote = models.Vote;
 var Route = models.Route;
 
-// TODO: email setup  pass kbb15d6s3d2sggf
-var myEmail = 'applicacion.turistica@gmail.com';
-var myPwd = 'kbb15d6s3d2sggf';
+// email must have security desactivated
+var myEmail = 'youremail@example.com';
+var myPwd = 'yourpassword';
 var mySmtp = 'smtp.gmail.com';
 var smtpServer  = email.server.connect({
    user:    myEmail, 
