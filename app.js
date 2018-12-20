@@ -26,8 +26,8 @@ var Vote = models.Vote;
 var Route = models.Route;
 
 // email must have security desactivated
-var myEmail = 'youremail@example.com';
-var myPwd = 'yourpassword';
+var myEmail = 'applicacion.turistica@gmail.com';
+var myPwd = 'kbb15d6s3d2sggf';
 var mySmtp = 'smtp.gmail.com';
 var smtpServer  = email.server.connect({
    user:    myEmail, 
@@ -37,7 +37,8 @@ var smtpServer  = email.server.connect({
 });
 
 // TODO: MongoDB setup (given default can be used)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-var pathToMongoDb = 'mongodb://localhost/turista';
+//var pathToMongoDb = 'mongodb://localhost/turista';
+var pathToMongoDb = 'mongodb://turista:turista123@ds217864.mlab.com:17864/turista';
 
 // TODO: Path to be send via email
 var host = 'http://'+getIPAddress()+':3000/';
@@ -55,12 +56,10 @@ passwordless.addDelivery(
            to:      recipient,
            subject: 'Token para ' + host
         }, function(err, message) { 
-            if(err) {
-                console.log(err);
-            }
-            callback(err);
+            console.log(err || message);
         });
-    });
+    }
+);
 
 app.use(logger('dev'));
 app.use(cookieParser());
@@ -70,7 +69,8 @@ app.use(expressSession({
                 resave: false})
     );
 
-app.set("view engine", "jade");
+app.set('views', './views')
+app.set("view engine", "pug");
 
 app.use(express.static("public"));
 app.use(bodyParser.json());
@@ -153,7 +153,6 @@ app.use('/app', require('./routes/index'));
 
 // Error 404
 app.get("*", function(req, res) {
-
     res.render("error", {message: "Página no encontrada"});
 });
 

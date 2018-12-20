@@ -1,7 +1,7 @@
 
 var mongoose = require("mongoose");
 mongoose.Promise = require("bluebird");
-mongoose.connect("mongodb://localhost/turista");
+mongoose.connect('mongodb://turista:turista123@ds217864.mlab.com:17864/turista');
 var Schema = mongoose.Schema;
 
 var emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;

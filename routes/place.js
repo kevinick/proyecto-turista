@@ -10,7 +10,7 @@ var multipartMiddleware = multipart({
     uploadDir: path.join(__dirname, "../public/imagenes")
 });
 
-var jade = require("jade");
+var pug = require("pug");
 
 var models = require("./models");
 var User = models.User;
@@ -105,8 +105,8 @@ router.route("/:id")
                 var userVote = checkUserVote(userid, place.votes);
                 try {
                     var filepath = path.join(
-                        __dirname, "../views/place.jade");
-                    var html = jade.renderFile(filepath, {
+                        __dirname, "../views/place.pug");
+                    var html = pug.renderFile(filepath, {
                         place: place, 
                         userVote: userVote,
                         user: res.locals.user
