@@ -43,7 +43,7 @@ var pathToMongoDb = 'mongodb://turista:turista123@ds217864.mlab.com:17864/turist
 var port = process.env.PORT || 3000;
 
 // TODO: Path to be send via email
-var host = 'http://'+getIPAddress()+ port +'/';
+var host = 'http://'+getIPAddress()+ ':' +port +'/';
 
 // Setup of Passwordless 
 passwordless.init(new MongoStore(pathToMongoDb));
