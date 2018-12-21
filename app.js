@@ -40,8 +40,10 @@ var smtpServer  = email.server.connect({
 //var pathToMongoDb = 'mongodb://localhost/turista';
 var pathToMongoDb = 'mongodb://turista:turista123@ds217864.mlab.com:17864/turista';
 
+var port = process.env.PORT || 3000;
+
 // TODO: Path to be send via email
-var host = 'http://'+getIPAddress()+':3000/';
+var host = 'http://'+getIPAddress()+ port +'/';
 
 // Setup of Passwordless 
 passwordless.init(new MongoStore(pathToMongoDb));
@@ -177,7 +179,7 @@ io.sockets.on('connection', function (socket){
 
 // establecer el puerto y escuchar
 console.log("Host => " + host);
-server.listen(3000);
+server.listen(port);
 
 function getIPAddress() {
     var interfaces = require('os').networkInterfaces();
